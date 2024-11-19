@@ -5,6 +5,6 @@ import com.comsystoreply.labs.chargingstations.app.model.ChargingStation;
 import java.util.List;
 
 public interface ForObtainingStations {
-    List<ChargingStation> loadAllChargingStations();
+    List<ChargingStation> fetchCurrentStations();
 
 }

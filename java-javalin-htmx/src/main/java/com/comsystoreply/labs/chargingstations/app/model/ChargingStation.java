@@ -1,8 +1,12 @@
 package com.comsystoreply.labs.chargingstations.app.model;
 
+import java.util.List;
+
 public record ChargingStation(
-        String id,
+        StationId id,
         String operator,
-        Location location
+        Location location,
+        String startOfService,
+        List<Charger> chargers
 ) {
 }

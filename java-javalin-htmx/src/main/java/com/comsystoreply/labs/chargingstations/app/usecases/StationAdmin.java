@@ -1,6 +1,7 @@
 package com.comsystoreply.labs.chargingstations.app.usecases;
 
 import com.comsystoreply.labs.chargingstations.app.model.StationId;
+import com.comsystoreply.labs.chargingstations.app.model.User;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForObtainingStations;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
 import com.comsystoreply.labs.chargingstations.app.ports.driving.ForMaintainingStations;
@@ -16,13 +17,13 @@ public class StationAdmin implements ForMaintainingStations {
     }
 
     @Override
-    public void refreshChargingStations() {
-        var stations = stationLoader.loadAllChargingStations();
+    public void importCurrentStations() {
+        var stations = stationLoader.fetchCurrentStations();
         stationRepository.saveAll(stations);
     }
 
     @Override
-    public void updateStationOperator(StationId stationId, String operator) {
+    public void updateStationOperator(User user, StationId stationId, String operator) {
 
     }
 }

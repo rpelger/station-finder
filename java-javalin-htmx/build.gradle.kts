@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.javalin:javalin:6.1.3")
+    implementation("io.javalin:javalin:6.3.0")
     implementation("io.badgod:jayreq:0.0.5")
     implementation("commons-codec:commons-codec:1.17.0")
 

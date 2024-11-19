@@ -9,11 +9,18 @@ import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStatio
 import java.util.List;
 
 public class FindNearestStations {
-    public FindNearestStations(ForStoringStations stationRepo) {
+    private final ForStoringStations stationRepo;
 
+    public FindNearestStations(ForStoringStations stationRepo) {
+        this.stationRepo = stationRepo;
     }
 
     public List<ChargingStation> apply(User user, Location location, Radius radius) {
-        return null;
+        checkAllowed(user);
+        return stationRepo.findNear(location, radius);
+    }
+
+    private void checkAllowed(User user) {
+
     }
 }

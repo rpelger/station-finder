@@ -13,21 +13,24 @@ public class ChargingStationsApp implements ForAccessingPlatform, ForMaintaining
     private final AuthenticateUser authenticateUser;
     private final FindNearestStations findNearestStations;
     private final ViewStationDetails viewStationDetails;
-    private final RefreshChargingStations refreshChargingStations;
+    private final ImportChargingStations importChargingStations;
     private final UpdateStationOperator updateStationOperator;
     private final AddStationReview addStationReview;
     private final ListStationReviews listStationReviews;
 
-    public ChargingStationsApp(ForObtainingStations stationLoader, ForStoringStations stationRepo, ForStoringUsers userRepo) {
+    public ChargingStationsApp(
+            ForObtainingStations stationLoader,
+            ForStoringStations stationRepo,
+            ForStoringUsers userRepo) {
+
         registerUser = new RegisterUser(userRepo);
         authenticateUser = new AuthenticateUser(userRepo);
         findNearestStations = new FindNearestStations(stationRepo);
         viewStationDetails = new ViewStationDetails(stationRepo);
-        refreshChargingStations = new RefreshChargingStations(stationLoader);
+        importChargingStations = new ImportChargingStations(stationLoader, stationRepo);
         updateStationOperator = new UpdateStationOperator(stationRepo);
         listStationReviews = new ListStationReviews();
         addStationReview = new AddStationReview();
-
     }
 
     @Override
@@ -51,13 +54,12 @@ public class ChargingStationsApp implements ForAccessingPlatform, ForMaintaining
     }
 
     @Override
-    public void refreshChargingStations() {
-        refreshChargingStations.apply();
+    public void importCurrentStations() {
+        importChargingStations.apply();
     }
 
     @Override
     public void updateStationOperator(User user, StationId stationId, String operator) {
-
         updateStationOperator.apply(user, stationId, operator);
     }
 

@@ -27,7 +27,7 @@ public class StationRequestHandler {
     }
 
     public void stationDetails(Context context) {
-        Long id = context.pathParamAsClass("id", Long.class).getOrThrow(err -> new RuntimeException());
+        var id = context.pathParamAsClass("id", String.class).getOrThrow(err -> new RuntimeException());
 
         var chargingStation = app.viewStationDetails(new User(), new StationId(id));
 
@@ -35,7 +35,7 @@ public class StationRequestHandler {
     }
 
     public void updateStationOperator(Context context) {
-        var id = context.pathParamAsClass("id", Long.class).getOrThrow(err -> new RuntimeException());
+        var id = context.pathParamAsClass("id", String.class).getOrThrow(err -> new RuntimeException());
         var updateStationRequest = context.bodyValidator(UpdateStationRequest.class).getOrThrow(err -> new RuntimeException());
 
         app.updateStationOperator(new User(), new StationId(id), updateStationRequest.operator);
@@ -44,7 +44,7 @@ public class StationRequestHandler {
     }
 
     public void stationReviews(Context context) {
-        Long id = context.pathParamAsClass("id", Long.class).getOrThrow(err -> new RuntimeException());
+        var id = context.pathParamAsClass("id", String.class).getOrThrow(err -> new RuntimeException());
 
         var reviews = app.listStationReviews(new User(), new StationId(id));
 
@@ -52,7 +52,7 @@ public class StationRequestHandler {
     }
 
     public void addStationReview(Context context) {
-        var id = context.pathParamAsClass("id", Long.class).getOrThrow(err -> new RuntimeException());
+        var id = context.pathParamAsClass("id", String.class).getOrThrow(err -> new RuntimeException());
         var addStationReviewRequest = context.bodyValidator(AddStationReviewRequest.class).getOrThrow(err -> new RuntimeException());
 
         app.addStationReview(

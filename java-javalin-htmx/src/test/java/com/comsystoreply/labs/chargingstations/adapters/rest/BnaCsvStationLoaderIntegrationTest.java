@@ -9,9 +9,11 @@ class BnaCsvStationLoaderIntegrationTest {
 
     @Test
     void should_load_bna_csv_file_with_stations() {
-        var result = new BnaCsvStationLoader().loadAllChargingStations();
+        var result = new BnaCsvStationsRestClient().fetchCurrentStations();
 
         assertThat(result, is(not(nullValue())));
+        assertThat(result, hasSize(greaterThan(0)));
+        result.forEach(c -> assertThat(c.chargers(), hasSize(greaterThan(0))));
     }
 
 }
