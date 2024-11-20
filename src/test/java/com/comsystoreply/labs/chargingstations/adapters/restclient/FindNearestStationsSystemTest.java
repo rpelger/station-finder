@@ -1,7 +1,7 @@
 package com.comsystoreply.labs.chargingstations.adapters.restclient;
 
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationRepository;
-import com.comsystoreply.labs.chargingstations.adapters.db.UserRepository;
+import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
 import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ public class FindNearestStationsSystemTest {
         app = new ChargingStationsApp(
                 new BnaCsvStationsRestClient(),
                 new InMemoryStationRepository(),
-                new UserRepository()
+                new InMemoryUserRepository()
         );
     }
 

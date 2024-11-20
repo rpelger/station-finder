@@ -2,6 +2,7 @@ package com.comsystoreply.labs.chargingstations.adapters.web;
 
 import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
 import com.comsystoreply.labs.chargingstations.app.Permissions;
+import com.comsystoreply.labs.chargingstations.app.usecases.RegisterUser;
 import io.javalin.Javalin;
 
 import java.time.LocalDateTime;
@@ -29,7 +30,12 @@ public class JavalinWebApp {
                         Permissions.Unauthorized.class,
                         (exception,ctx)-> ctx
                                 .status(403)
-                                .json(new ErrorResponse(403, exception.getMessage())));
+                                .json(new ErrorResponse(403, exception.getMessage())))
+                .exception(
+                        RegisterUser.AlreadyExists.class,
+                        (exception,ctx)-> ctx
+                                .status(409)
+                                .json(new ErrorResponse(409, exception.getMessage())));
     }
 
     record ErrorResponse(int status, String message, String timestamp) {

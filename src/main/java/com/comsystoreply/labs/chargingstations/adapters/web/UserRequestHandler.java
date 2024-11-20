@@ -13,7 +13,9 @@ public class UserRequestHandler {
     }
 
     public void registerNewUser(Context context) {
-        var registrationRequest = context.bodyValidator(UserRegistrationRequest.class).getOrThrow(err -> new RuntimeException());
+        var registrationRequest = context
+                .bodyValidator(UserRegistrationRequest.class)
+                .getOrThrow(err -> new RuntimeException());
 
         var user = app.regigsterNewUser(
                 new UserRegistration(
@@ -26,7 +28,9 @@ public class UserRequestHandler {
     }
 
     public void authenticateUser(Context context) {
-        var authenticationRequest = context.bodyValidator(UserAuthenticationRequest.class).getOrThrow(err -> new RuntimeException());
+        var authenticationRequest = context
+                .bodyValidator(UserAuthenticationRequest.class)
+                .getOrThrow(err -> new RuntimeException());
 
         var user = app.authenticateUser(
                 new UserCredentials(
@@ -35,7 +39,7 @@ public class UserRequestHandler {
         );
 
 
-        context.sessionAttribute("currentUser", user);
+        context.sessionAttribute("current_user", user);
         context.json(user);
     }
 

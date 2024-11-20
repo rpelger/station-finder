@@ -2,7 +2,7 @@ package com.comsystoreply.labs.chargingstations.app.model;
 
 import java.util.Set;
 
-public record User(UserId id, Set<Role> roles) {
+public record User(UserId id, String email, String password, Set<Role> roles) {
 
     public UserId id() {
         return id;
