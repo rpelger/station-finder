@@ -1,4 +1,4 @@
-package com.comsystoreply.labs.chargingstations.app;
+package com.comsystoreply.labs.chargingstations.app.usecases;
 
 import com.comsystoreply.labs.chargingstations.app.model.StationId;
 import com.comsystoreply.labs.chargingstations.app.model.User;

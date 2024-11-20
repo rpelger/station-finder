@@ -7,6 +7,6 @@ import java.util.List;
 public interface ForFindingStations {
 
     List<ChargingStation> findNearestStations(User user, Location location, Radius radius);
-    ChargingStation viewStationDetails(User user, StationId stationId);
 
+    ChargingStation viewStationDetails(User user, StationId stationId);
 }

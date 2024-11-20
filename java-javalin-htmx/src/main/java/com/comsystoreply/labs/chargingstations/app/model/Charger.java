@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 public record Charger(
         String type,
-        BigDecimal power,
-        String publicKey
+        BigDecimal power
 ) {
 }

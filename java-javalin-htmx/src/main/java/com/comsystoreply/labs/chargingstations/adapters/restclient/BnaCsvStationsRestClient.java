@@ -1,6 +1,6 @@
-package com.comsystoreply.labs.chargingstations.adapters.rest;
+package com.comsystoreply.labs.chargingstations.adapters.restclient;
 
-import com.comsystoreply.labs.chargingstations.adapters.rest.bna.BnaCsvStationParser;
+import com.comsystoreply.labs.chargingstations.adapters.restclient.bna.BnaCsvStationParser;
 import com.comsystoreply.labs.chargingstations.app.model.ChargingStation;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForObtainingStations;
 import io.badgod.jayreq.JayReq;

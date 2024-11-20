@@ -1,4 +1,4 @@
-package com.comsystoreply.labs.chargingstations.adapters.rest.bna;
+package com.comsystoreply.labs.chargingstations.adapters.restclient.bna;
 
 import com.comsystoreply.labs.chargingstations.app.model.Address;
 import com.comsystoreply.labs.chargingstations.app.model.Charger;
@@ -67,10 +67,7 @@ public class BnaCsvStationParser {
         int amountOfCargers = Integer.parseInt(record[13]);
         var chargers = new ArrayList<Charger>();
         for (int i = 0; i < amountOfCargers * 3; i = i + 3) {
-            chargers.add(new Charger(
-                    record[14 + i],
-                    getPower(record[15 + i]),
-                    record.length > (16 + i) ? record[16 + i] : ""));
+            chargers.add(new Charger(record[14 + i], getPower(record[15 + i])));
         }
         return chargers;
     }

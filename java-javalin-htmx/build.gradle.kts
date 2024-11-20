@@ -14,6 +14,8 @@ dependencies {
     implementation("io.javalin:javalin:6.3.0")
     implementation("io.badgod:jayreq:0.0.5")
     implementation("commons-codec:commons-codec:1.17.0")
+    implementation("org.slf4j:slf4j-simple:2.0.16")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")

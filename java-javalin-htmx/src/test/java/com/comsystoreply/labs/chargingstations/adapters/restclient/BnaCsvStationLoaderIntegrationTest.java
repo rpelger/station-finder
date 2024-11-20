@@ -1,4 +1,4 @@
-package com.comsystoreply.labs.chargingstations.adapters.rest;
+package com.comsystoreply.labs.chargingstations.adapters.restclient;
 
 import org.junit.jupiter.api.Test;
 

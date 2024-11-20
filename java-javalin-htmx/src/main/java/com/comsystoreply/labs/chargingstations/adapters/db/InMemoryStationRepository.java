@@ -1,17 +1,13 @@
 package com.comsystoreply.labs.chargingstations.adapters.db;
 
+import com.comsystoreply.labs.chargingstations.app.model.ChargingStation;
 import com.comsystoreply.labs.chargingstations.app.model.Location;
 import com.comsystoreply.labs.chargingstations.app.model.Radius;
 import com.comsystoreply.labs.chargingstations.app.model.StationId;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
-import com.comsystoreply.labs.chargingstations.app.model.ChargingStation;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -31,8 +27,8 @@ public class InMemoryStationRepository implements ForStoringStations {
     @Override
     public List<ChargingStation> findNear(Location location, Radius radius) {
         return stationsMap.values().stream()
-                .filter(station -> station.location().address().zipCode().equals(location.address().zipCode()))
-                .limit(50)
+                .sorted(Comparator.comparing(s -> s.id().value()))
+                .limit(10)
                 .toList();
     }
 

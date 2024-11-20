@@ -1,15 +1,13 @@
-package com.comsystoreply.labs.chargingstations.adapters.rest;
+package com.comsystoreply.labs.chargingstations.adapters.restclient;
 
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationRepository;
 import com.comsystoreply.labs.chargingstations.adapters.db.UserRepository;
 import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
-import com.comsystoreply.labs.chargingstations.app.model.Address;
-import com.comsystoreply.labs.chargingstations.app.model.Geo;
-import com.comsystoreply.labs.chargingstations.app.model.Location;
-import com.comsystoreply.labs.chargingstations.app.model.Radius;
-import com.comsystoreply.labs.chargingstations.app.model.User;
+import com.comsystoreply.labs.chargingstations.app.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
@@ -30,7 +28,7 @@ public class FindNearestStationsSystemTest {
 
     @Test
     void should_find_nearest_stations_after_import() {
-        var user = new User();
+        var user = new User(new UserId(1L), Set.of(User.Role.CONSUMER));
         var radius = new Radius(10.0d);
         var location = new Location(
                 new Geo(20.0d, 40.0d),
