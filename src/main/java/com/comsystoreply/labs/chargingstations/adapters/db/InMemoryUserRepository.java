@@ -1,7 +1,9 @@
 package com.comsystoreply.labs.chargingstations.adapters.db;
 
 import com.comsystoreply.labs.chargingstations.app.model.User;
+import com.comsystoreply.labs.chargingstations.app.model.UserCredentials;
 import com.comsystoreply.labs.chargingstations.app.model.UserId;
+import com.comsystoreply.labs.chargingstations.app.model.UserRegistration;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringUsers;
 
 import java.util.Comparator;
@@ -10,37 +12,53 @@ import java.util.Map;
 import java.util.Set;
 
 public class InMemoryUserRepository implements ForStoringUsers {
-    private static final Map<UserId, User> USERS = new HashMap<>();
+    private final Map<UserId, User> usersMap;
 
-    static {
-        USERS.put(new UserId(1L), new User(new UserId(1L), "r.peglger@reply.de", "test1234", Set.of(User.Role.ADMIN)));
-        USERS.put(new UserId(2L), new User(new UserId(2L), "pelgero@gmail.com", "test1234", Set.of(User.Role.CONSUMER)));
+    public final ForStoringUsers withDummyData() {
+        usersMap.put(new UserId(1L), new User(new UserId(1L), "r.peglger@reply.de", "test1234", "Robert", "Pelger", Set.of(User.Role.ADMIN)));
+        usersMap.put(new UserId(2L), new User(new UserId(2L), "pelgero@gmail.com", "test1234", "Roberto", "Pelegrini", Set.of(User.Role.CONSUMER)));
+        return this;
+    }
+
+    public InMemoryUserRepository() {
+        this.usersMap = new HashMap<>();
     }
 
     @Override
-    public User createNew(String email, String password) {
-        USERS.values().stream()
-                .filter(user -> user.email().equals(email))
+    public User createNew(UserRegistration registration) {
+        usersMap.values().stream()
+                .filter(user -> user.email().equals(registration.credentials().email()))
                 .findFirst()
                 .ifPresent(user -> {
-                    throw new IllegalArgumentException(String.format("An entry with email '%s' already exists", email));
+                    throw new IllegalArgumentException(
+                            String.format(
+                                    "An entry with email '%s' already exists",
+                                    registration.credentials().email()));
                 });
-        var newUser = new User(next(), email, password, Set.of(User.Role.CONSUMER));
-        USERS.put(newUser.id(), newUser);
+        var newUser = new User(
+                next(),
+                registration.credentials().email(),
+                registration.credentials().password(),
+                registration.firstname(),
+                registration.lastname(),
+                Set.of(User.Role.CONSUMER));
+        usersMap.put(newUser.id(), newUser);
         return newUser;
     }
 
     @Override
-    public User get(String email, String password) {
-        return USERS.values().stream()
-                .filter(user -> user.email().equals(email) && user.password().equals(password))
+    public User get(UserCredentials credentials) {
+        return usersMap.values().stream()
+                .filter(user -> user.email().equals(credentials.email())
+                        && user.password().equals(credentials.password()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException(String.format("User(email=%s, password=****) not found", email)));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("User(email=%s, password=****) not found", credentials.email())));
 
     }
 
     private UserId next() {
-        return new UserId(USERS.keySet()
+        return new UserId(usersMap.keySet()
                 .stream()
                 .map(UserId::value)
                 .max(Comparator.naturalOrder())

@@ -13,7 +13,7 @@ public class RegisterUser {
 
     public User apply(UserRegistration registration) {
         try {
-            return userRepo.createNew(registration.credentials().email(), registration.credentials().password());
+            return userRepo.createNew(registration);
         } catch (IllegalArgumentException e) {
             throw new AlreadyExists(registration);
         }

@@ -2,6 +2,7 @@ package com.comsystoreply.labs.chargingstations.adapters.web;
 
 import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
 import com.comsystoreply.labs.chargingstations.app.Permissions;
+import com.comsystoreply.labs.chargingstations.app.usecases.AuthenticateUser;
 import com.comsystoreply.labs.chargingstations.app.usecases.RegisterUser;
 import io.javalin.Javalin;
 
@@ -26,16 +27,19 @@ public class JavalinWebApp {
 
                 .post("/auth/registrations", userRequestHandler::registerNewUser)
                 .post("/auth/authentications", userRequestHandler::authenticateUser)
-                .exception(
-                        Permissions.Unauthorized.class,
+                .exception(Permissions.Unauthorized.class,
                         (exception,ctx)-> ctx
                                 .status(403)
                                 .json(new ErrorResponse(403, exception.getMessage())))
-                .exception(
-                        RegisterUser.AlreadyExists.class,
+                .exception(RegisterUser.AlreadyExists.class,
                         (exception,ctx)-> ctx
                                 .status(409)
-                                .json(new ErrorResponse(409, exception.getMessage())));
+                                .json(new ErrorResponse(409, exception.getMessage())))
+                .exception(AuthenticateUser.BadCredentials.class,
+                        (exception,ctx)-> ctx
+                                .status(401)
+                                .json(new ErrorResponse(401, exception.getMessage())))
+        ;
     }
 
     record ErrorResponse(int status, String message, String timestamp) {

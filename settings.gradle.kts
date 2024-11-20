@@ -6,4 +6,3 @@
  */
 
 rootProject.name = "station-finder"
-include("untitled")

@@ -1,9 +1,11 @@
 package com.comsystoreply.labs.chargingstations.app.ports.driven;
 
 import com.comsystoreply.labs.chargingstations.app.model.User;
+import com.comsystoreply.labs.chargingstations.app.model.UserCredentials;
+import com.comsystoreply.labs.chargingstations.app.model.UserRegistration;
 
 public interface ForStoringUsers {
-    User createNew(String email, String password);
+    User createNew(UserRegistration userRegistration);
 
-    User get(String email, String password);
+    User get(UserCredentials credentials);
 }

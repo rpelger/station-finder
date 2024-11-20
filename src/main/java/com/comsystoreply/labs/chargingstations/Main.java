@@ -12,7 +12,7 @@ public class Main {
         var chargingStationsApp = new ChargingStationsApp(
                 new BnaCsvStationsRestClient(),
                 new InMemoryStationRepository(),
-                new InMemoryUserRepository()
+                new InMemoryUserRepository().withDummyData()
         );
 
         var webapp = new JavalinWebApp(chargingStationsApp);
