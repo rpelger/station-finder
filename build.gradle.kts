@@ -1,5 +1,5 @@
 plugins {
-    java
+    application
 }
 
 group = "com.comsystoreply.labs"
@@ -34,3 +34,8 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
+
+application {
+    mainClass = "com.comsystoreply.labs.chargingstations.Main"
+}
+
