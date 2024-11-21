@@ -9,4 +9,13 @@ public record ChargingStation(
         String startOfService,
         List<Charger> chargers
 ) {
+    public ChargingStation withOperator(String operator) {
+        return new ChargingStation(
+                id,
+                operator,
+                location,
+                startOfService,
+                chargers
+        );
+    }
 }

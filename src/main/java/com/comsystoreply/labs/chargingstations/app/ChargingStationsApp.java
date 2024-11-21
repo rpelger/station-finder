@@ -54,8 +54,8 @@ public class ChargingStationsApp implements ForAccessingPlatform, ForMaintaining
     }
 
     @Override
-    public void importCurrentStations() {
-        importChargingStations.apply();
+    public void importCurrentStations(User user) {
+        importChargingStations.apply(user);
     }
 
     @Override

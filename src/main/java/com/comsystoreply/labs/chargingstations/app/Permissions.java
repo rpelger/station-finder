@@ -1,9 +1,7 @@
 package com.comsystoreply.labs.chargingstations.app;
 
 import com.comsystoreply.labs.chargingstations.app.model.User;
-import com.comsystoreply.labs.chargingstations.app.usecases.FindNearestStations;
-import com.comsystoreply.labs.chargingstations.app.usecases.ListStationReviews;
-import com.comsystoreply.labs.chargingstations.app.usecases.UseCase;
+import com.comsystoreply.labs.chargingstations.app.usecases.*;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -12,7 +10,9 @@ public class Permissions {
 
     private static final Map<Class<? extends UseCase>, Function<User, Boolean>> ALLOWANCES = Map.of(
             FindNearestStations.class, User::isConsumer,
-            ListStationReviews.class, User::isConsumer
+            ListStationReviews.class, User::isConsumer,
+            UpdateStationOperator.class, User::isAdmin,
+            ImportChargingStations.class, User::isAdmin
     );
 
     private static final Function<User, Boolean> DENY_BY_DEFAULT = any -> false;

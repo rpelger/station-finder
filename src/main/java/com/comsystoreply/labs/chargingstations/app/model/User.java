@@ -10,8 +10,15 @@ public record User(
         String lastName,
         Set<Role> roles) {
 
-    public static final User DUMMY_USER = new User(
+    public static final User SYSTEM_USER = new User(
             new UserId(-1L),
+            "system",
+            "akljdaldj29jda9pjd9ud9apdap9du9udp92jda9jd9adhadgagsjdfhkjhf8ao9eujia",
+            "Charging Stations",
+            "System",
+            Set.of(User.Role.ADMIN));
+    public static final User DUMMY_USER = new User(
+            new UserId(-99L),
             "test@example.com",
             "test",
             "John",

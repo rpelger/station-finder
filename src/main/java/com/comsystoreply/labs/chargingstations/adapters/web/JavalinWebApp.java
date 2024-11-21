@@ -2,8 +2,7 @@ package com.comsystoreply.labs.chargingstations.adapters.web;
 
 import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
 import com.comsystoreply.labs.chargingstations.app.Permissions;
-import com.comsystoreply.labs.chargingstations.app.usecases.AuthenticateUser;
-import com.comsystoreply.labs.chargingstations.app.usecases.RegisterUser;
+import com.comsystoreply.labs.chargingstations.app.usecases.*;
 import io.javalin.Javalin;
 
 import java.time.LocalDateTime;
@@ -22,23 +21,27 @@ public class JavalinWebApp {
                 .get ("/charging-stations/near/{lat}/{long}", stationRequestHandler::findNearestStations)
                 .get ("/charging-stations/{id}", stationRequestHandler::stationDetails)
                 .get ("/charging-stations/{id}/reviews", stationRequestHandler::stationReviews)
-                .post("/charging-stations/{id}", stationRequestHandler::updateStationOperator)
+                .put("/charging-stations/{id}", stationRequestHandler::updateStationOperator)
                 .post("/charging-stations/{id}/reviews", stationRequestHandler::addStationReview)
 
                 .post("/auth/registrations", userRequestHandler::registerNewUser)
                 .post("/auth/authentications", userRequestHandler::authenticateUser)
                 .exception(Permissions.Unauthorized.class,
-                        (exception,ctx)-> ctx
+                        (exception, ctx) -> ctx
                                 .status(403)
                                 .json(new ErrorResponse(403, exception.getMessage())))
                 .exception(RegisterUser.AlreadyExists.class,
-                        (exception,ctx)-> ctx
+                        (exception, ctx) -> ctx
                                 .status(409)
                                 .json(new ErrorResponse(409, exception.getMessage())))
                 .exception(AuthenticateUser.BadCredentials.class,
-                        (exception,ctx)-> ctx
+                        (exception, ctx) -> ctx
                                 .status(401)
                                 .json(new ErrorResponse(401, exception.getMessage())))
+                .exception(UpdateStationOperator.InvalidStationId.class,
+                        (exception, ctx) -> ctx
+                                .status(400)
+                                .json(new ErrorResponse(400, exception.getMessage())))
         ;
     }
 

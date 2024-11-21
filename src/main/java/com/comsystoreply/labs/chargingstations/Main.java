@@ -5,6 +5,7 @@ import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepositor
 import com.comsystoreply.labs.chargingstations.adapters.restclient.BnaCsvStationsRestClient;
 import com.comsystoreply.labs.chargingstations.adapters.web.JavalinWebApp;
 import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
+import com.comsystoreply.labs.chargingstations.app.model.User;
 
 public class Main {
 
@@ -17,7 +18,7 @@ public class Main {
 
         var webapp = new JavalinWebApp(chargingStationsApp);
 
-        chargingStationsApp.importCurrentStations();
+        chargingStationsApp.importCurrentStations(User.SYSTEM_USER);
         webapp.start(8080);
     }
 

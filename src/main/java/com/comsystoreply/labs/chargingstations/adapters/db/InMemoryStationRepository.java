@@ -32,6 +32,18 @@ public class InMemoryStationRepository implements ForStoringStations {
                 .toList();
     }
 
+    @Override
+    public void updateOperator(StationId id, String operator) {
+        var updatedStation = Optional.ofNullable(stationsMap.get(id))
+                .map(station -> station.withOperator(operator))
+                .orElseThrow(() -> InMemoryStationRepository.notFoundError(id));
+        stationsMap.put(id, updatedStation);
+    }
+
+    private static RuntimeException notFoundError(StationId id) {
+        throw new IllegalArgumentException("Not found ChargingStation(id=" + id + ")");
+    }
+
     private static ChargingStation conflictError(ChargingStation cs1, ChargingStation cs2) {
         throw new RuntimeException("Conflict error");
     }

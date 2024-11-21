@@ -1,10 +1,12 @@
 package com.comsystoreply.labs.chargingstations.app.usecases;
 
+import com.comsystoreply.labs.chargingstations.app.Permissions;
+import com.comsystoreply.labs.chargingstations.app.model.User;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForObtainingStations;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
 import com.comsystoreply.labs.chargingstations.app.usecases.error.ImportStationsError;
 
-public class ImportChargingStations {
+public class ImportChargingStations implements UseCase{
     private final ForObtainingStations stationLoader;
     private final ForStoringStations stationRepo;
 
@@ -13,7 +15,8 @@ public class ImportChargingStations {
         this.stationRepo = stationRepo;
     }
 
-    public void apply() {
+    public void apply(User user) {
+        Permissions.checkAllowed(user, this);
         try {
             var stations = stationLoader.fetchCurrentStations();
             stationRepo.saveAll(stations);

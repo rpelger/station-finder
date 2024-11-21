@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 
-public class FindNearestStationsTest {
+public class ForFindingStationsTest {
 
     private ChargingStationsApp app;
 
@@ -36,7 +36,7 @@ public class FindNearestStationsTest {
                 new Geo(20.0d, 40.0d),
                 new Address("A-Street", "49", "53173", "Bonn", "NRW", "Germany"));
 
-        app.importCurrentStations();
+        app.importCurrentStations(User.SYSTEM_USER);
         var stations = app.findNearestStations(user, location, radius);
 
         assertThat(stations, hasSize(greaterThan(0)));
