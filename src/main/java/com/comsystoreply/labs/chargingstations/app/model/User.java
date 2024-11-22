@@ -10,13 +10,19 @@ public record User(
         String lastName,
         Set<Role> roles) {
 
+    public enum Role {
+        CONSUMER,
+        ADMIN,
+        SYSTEM
+    }
+
     public static final User SYSTEM_USER = new User(
             new UserId(-1L),
             "system",
             "akljdaldj29jda9pjd9ud9apdap9du9udp92jda9jd9adhadgagsjdfhkjhf8ao9eujia",
             "Charging Stations",
             "System",
-            Set.of(User.Role.ADMIN));
+            Set.of(User.Role.SYSTEM));
     public static final User DUMMY_USER = new User(
             new UserId(-99L),
             "test@example.com",
@@ -30,10 +36,6 @@ public record User(
         return id;
     }
 
-    public enum Role {
-        CONSUMER,
-        ADMIN
-    }
 
     public boolean isConsumer() {
         return roles.contains(Role.CONSUMER);
@@ -41,5 +43,9 @@ public record User(
 
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
+    }
+
+    public boolean isSystem() {
+        return  roles.contains(Role.SYSTEM);
     }
 }

@@ -12,7 +12,7 @@ public class Permissions {
             FindNearestStations.class, User::isConsumer,
             ListStationReviews.class, User::isConsumer,
             UpdateStationOperator.class, User::isAdmin,
-            ImportChargingStations.class, User::isAdmin
+            ImportChargingStations.class, user -> user.isAdmin() || user.isSystem()
     );
 
     private static final Function<User, Boolean> DENY_BY_DEFAULT = any -> false;
