@@ -1,7 +1,7 @@
-package com.comsystoreply.labs.chargingstations.app;
+package com.comsystoreply.labs.chargingstations.app.usecases;
 
 import com.comsystoreply.labs.chargingstations.app.model.User;
-import com.comsystoreply.labs.chargingstations.app.usecases.*;
+import com.comsystoreply.labs.chargingstations.app.usecases.error.Unauthorized;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -12,7 +12,8 @@ public class Permissions {
             FindNearestStations.class, User::isConsumer,
             ListStationReviews.class, User::isConsumer,
             UpdateStationOperator.class, User::isAdmin,
-            ImportChargingStations.class, user -> user.isAdmin() || user.isSystem()
+            ImportChargingStations.class, User::isAdmin,
+            ViewStationDetails.class, User::isConsumer
     );
 
     private static final Function<User, Boolean> DENY_BY_DEFAULT = any -> false;
@@ -22,14 +23,8 @@ public class Permissions {
     }
 
     public static void checkAllowed(User user, UseCase useCase) {
-        if(!isAllowed(user, useCase)) {
-            throw new Unauthorized(user, useCase);
-        }
-    }
-
-    public static class Unauthorized extends RuntimeException {
-        public Unauthorized(User user, UseCase usecase) {
-            super(String.format("Unauthorized access of User(id=%s) on use-case: %s", user.id().value(), usecase.getClass().getSimpleName()));
+        if (!isAllowed(user, useCase)) {
+            throw new Unauthorized(useCase, user);
         }
     }
 }

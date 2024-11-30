@@ -5,8 +5,8 @@ import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepositor
 import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
 import com.comsystoreply.labs.chargingstations.app.model.UserCredentials;
 import com.comsystoreply.labs.chargingstations.app.model.UserRegistration;
-import com.comsystoreply.labs.chargingstations.app.usecases.AuthenticateUser;
-import com.comsystoreply.labs.chargingstations.app.usecases.RegisterUser;
+import com.comsystoreply.labs.chargingstations.app.usecases.error.BadCredentials;
+import com.comsystoreply.labs.chargingstations.app.usecases.error.UserAlreadyExists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +47,7 @@ public class ForManagingUsersTest {
             app.regigsterNewUser(new UserRegistration(new UserCredentials(email, "b"), "Jane", "Fox"));
             fail("Should have thrown here");
         } catch (Exception e) {
-            assertThat(e, instanceOf(RegisterUser.AlreadyExists.class));
+            assertThat(e, instanceOf(UserAlreadyExists.class));
         }
     }
 
@@ -66,7 +66,7 @@ public class ForManagingUsersTest {
         try {
             app.authenticateUser(new UserCredentials("john@example.com", "test6666"));
         } catch (Exception e) {
-            assertThat(e, instanceOf(AuthenticateUser.BadCredentials.class));
+            assertThat(e, instanceOf(BadCredentials.class));
         }
     }
 
@@ -76,7 +76,7 @@ public class ForManagingUsersTest {
         try {
             app.authenticateUser(new UserCredentials("hugo@example.com", "test1234"));
         } catch (Exception e) {
-            assertThat(e, instanceOf(AuthenticateUser.BadCredentials.class));
+            assertThat(e, instanceOf(BadCredentials.class));
         }
     }
 }

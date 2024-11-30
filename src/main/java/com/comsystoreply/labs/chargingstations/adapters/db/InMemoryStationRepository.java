@@ -30,6 +30,12 @@ public class InMemoryStationRepository implements ForStoringStations {
     }
 
     @Override
+    public ChargingStation get(StationId stationId) {
+        return Optional.ofNullable(stationsMap.get(stationId))
+                .orElseThrow(() -> notFoundError(stationId));
+    }
+
+    @Override
     public void updateOperator(StationId id, String operator) {
         var updatedStation = Optional.ofNullable(stationsMap.get(id))
                 .map(station -> station.withOperator(operator))

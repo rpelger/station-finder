@@ -11,6 +11,8 @@ public interface ForStoringStations {
 
     List<ChargingStation> findNear(Location location, Radius radius);
 
+    ChargingStation get(StationId stationId);
+
     void updateOperator(StationId id, String operator);
 
 }

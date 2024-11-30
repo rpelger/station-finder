@@ -11,6 +11,7 @@ import java.util.List;
 public class BnaCsvStationsRestClient implements ForObtainingStations {
 
     private static final String BNA_DATA_URL = "https://data.bundesnetzagentur.de/Bundesnetzagentur/SharedDocs/Downloads/DE/Sachgebiete/Energie/Unternehmen_Institutionen/E_Mobilitaet/Ladesaeulenregister.csv";
+    // private static final String BNA_DATA_URL = "https://data.bundesnetzagentur.de/Bundesnetzagentur/SharedDocs/Downloads/DE/Sachgebiete/Energie/Unternehmen_Institutionen/E_Mobilitaet/Ladesaeulenregister_BNetzA_2024-09-01_v2.csv";
     private final BnaCsvStationParser csvStationParser;
 
     public BnaCsvStationsRestClient() {

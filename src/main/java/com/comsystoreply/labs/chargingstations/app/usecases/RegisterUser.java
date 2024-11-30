@@ -3,6 +3,7 @@ package com.comsystoreply.labs.chargingstations.app.usecases;
 import com.comsystoreply.labs.chargingstations.app.model.User;
 import com.comsystoreply.labs.chargingstations.app.model.UserRegistration;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringUsers;
+import com.comsystoreply.labs.chargingstations.app.usecases.error.UserAlreadyExists;
 
 public class RegisterUser {
     private final ForStoringUsers userRepo;
@@ -15,13 +16,8 @@ public class RegisterUser {
         try {
             return userRepo.createNew(registration);
         } catch (IllegalArgumentException e) {
-            throw new AlreadyExists(registration);
+            throw new UserAlreadyExists(registration);
         }
     }
 
-    public static class AlreadyExists extends RuntimeException {
-        public AlreadyExists(UserRegistration registration) {
-            super(String.format("User with email %s already exists", registration.credentials().email()));
-        }
-    }
 }

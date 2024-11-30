@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
-public class ForManagingStationsTest {
+public class ForMaintainingStationsTest {
     private ChargingStationsApp app;
 
     private static final Location LOCATION = new Location(
@@ -49,14 +49,14 @@ public class ForManagingStationsTest {
 
     @Test
     void should_update_operator() {
-       app.importCurrentStations(User.SYSTEM_USER);
-       var station = app.findNearestStations(User.DUMMY_USER, LOCATION, new Radius(10d)).get(0);
+        app.importCurrentStations(User.SYSTEM_USER);
+        var station = app.findNearestStations(User.DUMMY_USER, LOCATION, new Radius(10d)).get(0);
 
-       assertThat(station.operator(), is("operator1"));
-       app.updateStationOperator(User.SYSTEM_USER, station.id(), "operator2");
+        assertThat(station.operator(), is("operator1"));
+        app.updateStationOperator(User.SYSTEM_USER, station.id(), "operator2");
 
-       station = app.findNearestStations(User.DUMMY_USER, LOCATION, new Radius(10d)).get(0);
-       assertThat(station.operator(), is("operator2"));
+        station = app.findNearestStations(User.DUMMY_USER, LOCATION, new Radius(10d)).get(0);
+        assertThat(station.operator(), is("operator2"));
     }
 
 }
