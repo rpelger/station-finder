@@ -1,20 +1,12 @@
 package com.comsystoreply.labs.chargingstations.adapters.web;
 
 import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
-import com.comsystoreply.labs.chargingstations.app.model.Address;
-import com.comsystoreply.labs.chargingstations.app.model.Charger;
-import com.comsystoreply.labs.chargingstations.app.model.Geo;
-import com.comsystoreply.labs.chargingstations.app.model.Location;
-import com.comsystoreply.labs.chargingstations.app.model.Radius;
-import com.comsystoreply.labs.chargingstations.app.model.StationId;
-import com.comsystoreply.labs.chargingstations.app.model.User;
-import com.comsystoreply.labs.chargingstations.app.model.UserId;
+import com.comsystoreply.labs.chargingstations.app.model.*;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public class StationRequestHandler {
 

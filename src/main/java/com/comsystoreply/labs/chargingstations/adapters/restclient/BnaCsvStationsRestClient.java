@@ -8,9 +8,6 @@ import io.badgod.jayreq.JayReq;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.stream.Collectors.reducing;
-import static java.util.stream.Collectors.toMap;
-
 public class BnaCsvStationsRestClient implements ForObtainingStations {
 
     private static final String BNA_DATA_URL = "https://data.bundesnetzagentur.de/Bundesnetzagentur/SharedDocs/Downloads/DE/Sachgebiete/Energie/Unternehmen_Institutionen/E_Mobilitaet/Ladesaeulenregister.csv";

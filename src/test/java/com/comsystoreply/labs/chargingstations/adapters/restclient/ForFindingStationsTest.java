@@ -3,11 +3,7 @@ package com.comsystoreply.labs.chargingstations.adapters.restclient;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationRepository;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
 import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
-import com.comsystoreply.labs.chargingstations.app.model.Address;
-import com.comsystoreply.labs.chargingstations.app.model.Geo;
-import com.comsystoreply.labs.chargingstations.app.model.Location;
-import com.comsystoreply.labs.chargingstations.app.model.Radius;
-import com.comsystoreply.labs.chargingstations.app.model.User;
+import com.comsystoreply.labs.chargingstations.app.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,9 +1,6 @@
 package com.comsystoreply.labs.chargingstations.adapters.db;
 
-import com.comsystoreply.labs.chargingstations.app.model.ChargingStation;
-import com.comsystoreply.labs.chargingstations.app.model.Location;
-import com.comsystoreply.labs.chargingstations.app.model.Radius;
-import com.comsystoreply.labs.chargingstations.app.model.StationId;
+import com.comsystoreply.labs.chargingstations.app.model.*;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
 
 import java.util.*;

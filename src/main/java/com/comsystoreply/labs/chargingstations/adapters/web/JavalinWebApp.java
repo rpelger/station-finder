@@ -21,7 +21,7 @@ public class JavalinWebApp {
                 .get ("/charging-stations/near/{lat}/{long}", stationRequestHandler::findNearestStations)
                 .get ("/charging-stations/{id}", stationRequestHandler::stationDetails)
                 .get ("/charging-stations/{id}/reviews", stationRequestHandler::stationReviews)
-                .put("/charging-stations/{id}", stationRequestHandler::updateStationOperator)
+                .put ("/charging-stations/{id}", stationRequestHandler::updateStationOperator)
                 .post("/charging-stations/{id}/reviews", stationRequestHandler::addStationReview)
 
                 .post("/auth/registrations", userRequestHandler::registerNewUser)

@@ -1,17 +1,10 @@
 package com.comsystoreply.labs.chargingstations.adapters.restclient.bna;
 
-import com.comsystoreply.labs.chargingstations.app.model.Address;
-import com.comsystoreply.labs.chargingstations.app.model.Charger;
-import com.comsystoreply.labs.chargingstations.app.model.ChargingStation;
-import com.comsystoreply.labs.chargingstations.app.model.Geo;
-import com.comsystoreply.labs.chargingstations.app.model.Location;
-import com.comsystoreply.labs.chargingstations.app.model.StationId;
+import com.comsystoreply.labs.chargingstations.app.model.*;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 

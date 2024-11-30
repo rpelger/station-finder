@@ -1,9 +1,7 @@
 package com.comsystoreply.labs.chargingstations.app.usecases;
 
 import com.comsystoreply.labs.chargingstations.app.Permissions;
-import com.comsystoreply.labs.chargingstations.app.model.Review;
-import com.comsystoreply.labs.chargingstations.app.model.StationId;
-import com.comsystoreply.labs.chargingstations.app.model.User;
+import com.comsystoreply.labs.chargingstations.app.model.*;
 
 import java.util.List;
 

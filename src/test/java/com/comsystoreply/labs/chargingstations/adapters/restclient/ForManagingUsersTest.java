@@ -11,10 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ForManagingUsersTest {
@@ -45,18 +42,18 @@ public class ForManagingUsersTest {
     @Test
     void should_conflict_when_user_with_same_email_exists() {
         String email = "john@test.de";
-        app.regigsterNewUser(new UserRegistration(new UserCredentials(email, "a"),"John", "Doe"));
+        app.regigsterNewUser(new UserRegistration(new UserCredentials(email, "a"), "John", "Doe"));
         try {
             app.regigsterNewUser(new UserRegistration(new UserCredentials(email, "b"), "Jane", "Fox"));
             fail("Should have thrown here");
         } catch (Exception e) {
-            assertThat(e , instanceOf(RegisterUser.AlreadyExists.class));
+            assertThat(e, instanceOf(RegisterUser.AlreadyExists.class));
         }
     }
 
     @Test
     void should_authenticate_existing_user_with_valid_credentials() {
-        app.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"),"John", "Doe"));
+        app.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"), "John", "Doe"));
         var user = app.authenticateUser(new UserCredentials("john@example.com", "test1234"));
 
         assertThat(user, is(not(nullValue())));
@@ -65,21 +62,21 @@ public class ForManagingUsersTest {
 
     @Test
     void should_error_when_authenticating_with_incorrect_password() {
-        app.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"),"John", "Doe"));
+        app.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"), "John", "Doe"));
         try {
             app.authenticateUser(new UserCredentials("john@example.com", "test6666"));
-        } catch(Exception e ){
-            assertThat(e , instanceOf(AuthenticateUser.BadCredentials.class));
+        } catch (Exception e) {
+            assertThat(e, instanceOf(AuthenticateUser.BadCredentials.class));
         }
     }
 
     @Test
     void should_error_when_authenticating_with_unknown_email() {
-        app.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"),"John", "Doe"));
+        app.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"), "John", "Doe"));
         try {
             app.authenticateUser(new UserCredentials("hugo@example.com", "test1234"));
-        } catch(Exception e ){
-            assertThat(e , instanceOf(AuthenticateUser.BadCredentials.class));
+        } catch (Exception e) {
+            assertThat(e, instanceOf(AuthenticateUser.BadCredentials.class));
         }
     }
 }

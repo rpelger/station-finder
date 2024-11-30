@@ -1,15 +1,9 @@
 package com.comsystoreply.labs.chargingstations.adapters.db;
 
-import com.comsystoreply.labs.chargingstations.app.model.User;
-import com.comsystoreply.labs.chargingstations.app.model.UserCredentials;
-import com.comsystoreply.labs.chargingstations.app.model.UserId;
-import com.comsystoreply.labs.chargingstations.app.model.UserRegistration;
+import com.comsystoreply.labs.chargingstations.app.model.*;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringUsers;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class InMemoryUserRepository implements ForStoringUsers {
     private final Map<UserId, User> usersMap;
