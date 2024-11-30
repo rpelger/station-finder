@@ -11,6 +11,7 @@ public class ChargingStationsApp implements ForAccessingPlatform, ForMaintaining
 
     private final RegisterUser registerUser;
     private final AuthenticateUser authenticateUser;
+    private final ListAllStations listAllStations;
     private final FindNearestStations findNearestStations;
     private final ViewStationDetails viewStationDetails;
     private final ImportChargingStations importChargingStations;
@@ -26,6 +27,7 @@ public class ChargingStationsApp implements ForAccessingPlatform, ForMaintaining
         registerUser = new RegisterUser(userRepo);
         authenticateUser = new AuthenticateUser(userRepo);
         findNearestStations = new FindNearestStations(stationRepo);
+        listAllStations = new ListAllStations(stationRepo);
         viewStationDetails = new ViewStationDetails(stationRepo);
         importChargingStations = new ImportChargingStations(stationLoader, stationRepo);
         updateStationOperator = new UpdateStationOperator(stationRepo);
@@ -51,6 +53,11 @@ public class ChargingStationsApp implements ForAccessingPlatform, ForMaintaining
     @Override
     public ChargingStation viewStationDetails(User user, StationId stationId) {
         return viewStationDetails.apply(user, stationId);
+    }
+
+    @Override
+    public List<ChargingStation> listAll(User user) {
+        return listAllStations.apply(user);
     }
 
     @Override

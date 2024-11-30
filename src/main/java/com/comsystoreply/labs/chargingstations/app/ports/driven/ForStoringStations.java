@@ -13,6 +13,7 @@ public interface ForStoringStations {
 
     ChargingStation get(StationId stationId);
 
-    void updateOperator(StationId id, String operator);
+    List<ChargingStation> getAll();
 
+    void updateOperator(StationId id, String operator);
 }

@@ -36,6 +36,13 @@ public class InMemoryStationRepository implements ForStoringStations {
     }
 
     @Override
+    public List<ChargingStation> getAll() {
+        return stationsMap.values().stream()
+                .sorted(Comparator.comparing(s -> s.location().address().zipCode()))
+                .toList();
+    }
+
+    @Override
     public void updateOperator(StationId id, String operator) {
         var updatedStation = Optional.ofNullable(stationsMap.get(id))
                 .map(station -> station.withOperator(operator))

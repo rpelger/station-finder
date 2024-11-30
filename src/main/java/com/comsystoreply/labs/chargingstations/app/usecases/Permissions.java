@@ -1,5 +1,6 @@
 package com.comsystoreply.labs.chargingstations.app.usecases;
 
+import com.comsystoreply.labs.chargingstations.app.ListAllStations;
 import com.comsystoreply.labs.chargingstations.app.model.User;
 import com.comsystoreply.labs.chargingstations.app.usecases.error.Unauthorized;
 
@@ -11,9 +12,11 @@ public class Permissions {
     private static final Map<Class<? extends UseCase>, Function<User, Boolean>> ALLOWANCES = Map.of(
             FindNearestStations.class, User::isConsumer,
             ListStationReviews.class, User::isConsumer,
+            ViewStationDetails.class, User::isConsumer,
+
             UpdateStationOperator.class, User::isAdmin,
-            ImportChargingStations.class, User::isAdmin,
-            ViewStationDetails.class, User::isConsumer
+            ImportChargingStations.class, user -> user.isAdmin() || user.isSystem(),
+            ListAllStations.class, User::isAdmin
     );
 
     private static final Function<User, Boolean> DENY_BY_DEFAULT = any -> false;

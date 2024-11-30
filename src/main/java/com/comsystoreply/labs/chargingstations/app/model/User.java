@@ -10,6 +10,8 @@ public record User(
         String lastName,
         Set<Role> roles) {
 
+
+
     public enum Role {
         CONSUMER,
         ADMIN,
@@ -30,6 +32,14 @@ public record User(
             "John",
             "Doe",
             Set.of(User.Role.CONSUMER));
+    public static final User ADMIN_USER = new User(
+            new UserId(1L),
+            "admin@example.com",
+            "test",
+            "Armin",
+            "Admin",
+            Set.of(User.Role.ADMIN));
+            ;
 
 
     public UserId id() {
