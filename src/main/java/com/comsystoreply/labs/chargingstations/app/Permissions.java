@@ -1,7 +1,7 @@
-package com.comsystoreply.labs.chargingstations.app.usecases;
+package com.comsystoreply.labs.chargingstations.app;
 
-import com.comsystoreply.labs.chargingstations.app.ListAllStations;
 import com.comsystoreply.labs.chargingstations.app.model.User;
+import com.comsystoreply.labs.chargingstations.app.usecases.*;
 import com.comsystoreply.labs.chargingstations.app.usecases.error.Unauthorized;
 
 import java.util.Map;
@@ -11,8 +11,9 @@ public class Permissions {
 
     private static final Map<Class<? extends UseCase>, Function<User, Boolean>> ALLOWANCES = Map.of(
             FindNearestStations.class, User::isConsumer,
-            ListStationReviews.class, User::isConsumer,
             ViewStationDetails.class, User::isConsumer,
+            ListStationReviews.class, User::isConsumer,
+            AddStationReview.class, User::isConsumer,
 
             UpdateStationOperator.class, User::isAdmin,
             ImportChargingStations.class, user -> user.isAdmin() || user.isSystem(),

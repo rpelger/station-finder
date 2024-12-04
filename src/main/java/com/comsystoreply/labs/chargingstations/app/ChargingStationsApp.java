@@ -31,8 +31,8 @@ public class ChargingStationsApp implements ForAccessingPlatform, ForMaintaining
         viewStationDetails = new ViewStationDetails(stationRepo);
         importChargingStations = new ImportChargingStations(stationLoader, stationRepo);
         updateStationOperator = new UpdateStationOperator(stationRepo);
-        listStationReviews = new ListStationReviews();
-        addStationReview = new AddStationReview();
+        listStationReviews = new ListStationReviews(stationRepo);
+        addStationReview = new AddStationReview(stationRepo);
     }
 
     @Override

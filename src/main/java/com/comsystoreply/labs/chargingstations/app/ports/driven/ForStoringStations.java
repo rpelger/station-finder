@@ -15,5 +15,11 @@ public interface ForStoringStations {
 
     List<ChargingStation> getAll();
 
+    boolean exists(StationId stationId);
+
     void updateOperator(StationId id, String operator);
+
+    void addReview(StationId id, Review review);
+
+    List<Review> findAllStationReviews(StationId stationId);
 }

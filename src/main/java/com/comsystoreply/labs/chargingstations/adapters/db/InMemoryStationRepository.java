@@ -11,6 +11,7 @@ import static java.util.stream.Collectors.toMap;
 public class InMemoryStationRepository implements ForStoringStations {
 
     private final Map<StationId, ChargingStation> stationsMap = new HashMap<>();
+    private final Map<StationId, List<Review>> reviewsMap = new HashMap<>();
 
     @Override
     public void saveAll(Collection<ChargingStation> stations) {
@@ -43,11 +44,32 @@ public class InMemoryStationRepository implements ForStoringStations {
     }
 
     @Override
+    public boolean exists(StationId stationId) {
+        return Optional.ofNullable(stationsMap.get(stationId)).isPresent();
+    }
+
+    @Override
     public void updateOperator(StationId id, String operator) {
         var updatedStation = Optional.ofNullable(stationsMap.get(id))
                 .map(station -> station.withOperator(operator))
                 .orElseThrow(() -> InMemoryStationRepository.notFoundError(id));
         stationsMap.put(id, updatedStation);
+    }
+
+    @Override
+    public void addReview(StationId id, Review review) {
+        if(reviewsMap.containsKey(id)) {
+            var reviews = reviewsMap.get(id);
+            reviews.add(review);
+            reviewsMap.put(id, reviews);
+        } else {
+            reviewsMap.put(id, List.of(review));
+        }
+    }
+
+    @Override
+    public List<Review> findAllStationReviews(StationId stationId) {
+        return reviewsMap.getOrDefault(stationId, List.of());
     }
 
     private static RuntimeException notFoundError(StationId id) {
