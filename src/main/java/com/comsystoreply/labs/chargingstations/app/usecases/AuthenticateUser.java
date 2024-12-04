@@ -13,10 +13,6 @@ public class AuthenticateUser {
     }
 
     public User apply(UserCredentials credentials) {
-        try {
-            return userRepo.get(credentials);
-        } catch (IllegalArgumentException e) {
-            throw new BadCredentials(credentials);
-        }
+        return userRepo.findBy(credentials).orElseThrow(() -> new BadCredentials(credentials));
     }
 }

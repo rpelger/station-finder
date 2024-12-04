@@ -4,6 +4,7 @@ import com.comsystoreply.labs.chargingstations.app.Permissions;
 import com.comsystoreply.labs.chargingstations.app.model.StationId;
 import com.comsystoreply.labs.chargingstations.app.model.User;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
+import com.comsystoreply.labs.chargingstations.app.ports.driven.error.StationNotFound;
 import com.comsystoreply.labs.chargingstations.app.usecases.error.InvalidStationId;
 
 public class UpdateStationOperator implements UseCase {
@@ -17,7 +18,7 @@ public class UpdateStationOperator implements UseCase {
         Permissions.checkAllowed(user, this);
         try {
             stationRepo.updateOperator(stationId, operator);
-        } catch (IllegalArgumentException e) {
+        } catch (StationNotFound e) {
             throw new InvalidStationId(this, stationId);
         }
     }

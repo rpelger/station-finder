@@ -3,6 +3,7 @@ package com.comsystoreply.labs.chargingstations.app.usecases;
 import com.comsystoreply.labs.chargingstations.app.Permissions;
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
+import com.comsystoreply.labs.chargingstations.app.ports.driven.error.StationNotFound;
 import com.comsystoreply.labs.chargingstations.app.usecases.error.InvalidStationId;
 
 public class ViewStationDetails implements UseCase {
@@ -16,7 +17,7 @@ public class ViewStationDetails implements UseCase {
         Permissions.checkAllowed(user, this);
         try {
             return stationRepo.get(stationId);
-        } catch (IllegalArgumentException e) {
+        } catch (StationNotFound e) {
             throw new InvalidStationId(this, stationId);
         }
     }

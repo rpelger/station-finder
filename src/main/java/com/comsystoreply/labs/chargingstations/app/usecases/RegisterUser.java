@@ -3,6 +3,7 @@ package com.comsystoreply.labs.chargingstations.app.usecases;
 import com.comsystoreply.labs.chargingstations.app.model.User;
 import com.comsystoreply.labs.chargingstations.app.model.UserRegistration;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringUsers;
+import com.comsystoreply.labs.chargingstations.app.ports.driven.error.DuplicateKeyConflict;
 import com.comsystoreply.labs.chargingstations.app.usecases.error.UserAlreadyExists;
 
 public class RegisterUser {
@@ -15,7 +16,7 @@ public class RegisterUser {
     public User apply(UserRegistration registration) {
         try {
             return userRepo.createNew(registration);
-        } catch (IllegalArgumentException e) {
+        } catch (DuplicateKeyConflict e) {
             throw new UserAlreadyExists(registration);
         }
     }

@@ -4,9 +4,11 @@ import com.comsystoreply.labs.chargingstations.app.Permissions;
 import com.comsystoreply.labs.chargingstations.app.model.User;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForObtainingStations;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
-import com.comsystoreply.labs.chargingstations.app.usecases.error.ImportStationsError;
+import com.comsystoreply.labs.chargingstations.app.ports.driven.error.ImportProcessingFailed;
+import com.comsystoreply.labs.chargingstations.app.usecases.error.ImportingStationsFailed;
 
 public class ImportChargingStations implements UseCase {
+
     private final ForObtainingStations stationLoader;
     private final ForStoringStations stationRepo;
 
@@ -20,8 +22,8 @@ public class ImportChargingStations implements UseCase {
         try {
             var stations = stationLoader.fetchCurrentStations();
             stationRepo.saveAll(stations);
-        } catch (Exception e) {
-            throw new ImportStationsError(e);
+        } catch (ImportProcessingFailed e) {
+            throw new ImportingStationsFailed(e);
         }
     }
 }

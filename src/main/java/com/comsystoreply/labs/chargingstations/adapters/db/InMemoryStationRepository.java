@@ -2,6 +2,7 @@ package com.comsystoreply.labs.chargingstations.adapters.db;
 
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
+import com.comsystoreply.labs.chargingstations.app.ports.driven.error.StationNotFound;
 
 import java.util.*;
 import java.util.function.Function;
@@ -31,9 +32,9 @@ public class InMemoryStationRepository implements ForStoringStations {
     }
 
     @Override
-    public ChargingStation get(StationId stationId) {
-        return Optional.ofNullable(stationsMap.get(stationId))
-                .orElseThrow(() -> notFoundError(stationId));
+    public ChargingStation get(StationId id) throws StationNotFound {
+        return Optional.ofNullable(stationsMap.get(id))
+                .orElseThrow(() -> new StationNotFound(id));
     }
 
     @Override
@@ -49,10 +50,10 @@ public class InMemoryStationRepository implements ForStoringStations {
     }
 
     @Override
-    public void updateOperator(StationId id, String operator) {
+    public void updateOperator(StationId id, String operator) throws StationNotFound {
         var updatedStation = Optional.ofNullable(stationsMap.get(id))
                 .map(station -> station.withOperator(operator))
-                .orElseThrow(() -> InMemoryStationRepository.notFoundError(id));
+                .orElseThrow(() -> new StationNotFound(id));
         stationsMap.put(id, updatedStation);
     }
 
@@ -70,10 +71,6 @@ public class InMemoryStationRepository implements ForStoringStations {
     @Override
     public List<Review> findAllStationReviews(StationId stationId) {
         return reviewsMap.getOrDefault(stationId, List.of());
-    }
-
-    private static RuntimeException notFoundError(StationId id) {
-        throw new IllegalArgumentException("Not found ChargingStation(id=" + id + ")");
     }
 
     private static ChargingStation conflictError(ChargingStation cs1, ChargingStation cs2) {

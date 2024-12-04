@@ -2,11 +2,17 @@ package com.comsystoreply.labs.chargingstations.adapters.db;
 
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringUsers;
+import com.comsystoreply.labs.chargingstations.app.ports.driven.error.DuplicateKeyConflict;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class InMemoryUserRepository implements ForStoringUsers {
     private final Map<UserId, User> usersMap;
+
+    public InMemoryUserRepository() {
+        this.usersMap = new HashMap<>();
+    }
 
     public final ForStoringUsers withDummyData() {
         usersMap.put(new UserId(1L), new User(new UserId(1L), "r.peglger@reply.de", "test1234", "Robert", "Pelger", Set.of(User.Role.ADMIN)));
@@ -14,21 +20,12 @@ public class InMemoryUserRepository implements ForStoringUsers {
         return this;
     }
 
-    public InMemoryUserRepository() {
-        this.usersMap = new HashMap<>();
-    }
-
     @Override
-    public User createNew(UserRegistration registration) {
-        usersMap.values().stream()
-                .filter(user -> user.email().equals(registration.credentials().email()))
-                .findFirst()
-                .ifPresent(user -> {
-                    throw new IllegalArgumentException(
-                            String.format(
-                                    "An entry with email '%s' already exists",
-                                    registration.credentials().email()));
-                });
+    public User createNew(UserRegistration registration) throws DuplicateKeyConflict {
+        if (usersMap.values().stream().anyMatch(byEmailOf(registration))) {
+            throw new DuplicateKeyConflict();
+        }
+
         var newUser = new User(
                 next(),
                 registration.credentials().email(),
@@ -40,14 +37,16 @@ public class InMemoryUserRepository implements ForStoringUsers {
         return newUser;
     }
 
+    private static Predicate<? super User> byEmailOf(UserRegistration registration) {
+        return user -> user.email().equals(registration.credentials().email());
+    }
+
     @Override
-    public User get(UserCredentials credentials) {
+    public Optional<User> findBy(UserCredentials credentials) {
         return usersMap.values().stream()
                 .filter(user -> user.email().equals(credentials.email())
                         && user.password().equals(credentials.password()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(
-                        String.format("User(email=%s, password=****) not found", credentials.email())));
+                .findFirst();
 
     }
 
