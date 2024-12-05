@@ -1,7 +1,7 @@
-package com.comsystoreply.labs.chargingstations.app.usecases.error;
+package com.comsystoreply.labs.chargingstations.app.model.error;
 
+import com.comsystoreply.labs.chargingstations.app.UseCase;
 import com.comsystoreply.labs.chargingstations.app.model.User;
-import com.comsystoreply.labs.chargingstations.app.usecases.UseCase;
 
 public class Unauthorized extends RuntimeException {
     public Unauthorized(UseCase usecase, User user) {

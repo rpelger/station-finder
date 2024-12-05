@@ -1,6 +1,6 @@
 package com.comsystoreply.labs.chargingstations.adapters.web;
 
-import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
+import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -10,10 +10,16 @@ import java.util.Optional;
 
 public class StationRequestHandler {
 
-    private final ChargingStationsApp app;
+    private final StationFinderApp app;
 
-    public StationRequestHandler(ChargingStationsApp app) {
+    public StationRequestHandler(StationFinderApp app) {
         this.app = app;
+    }
+
+    private static User getUser(Context context) {
+        return Optional
+                .ofNullable(context.<User>sessionAttribute("current_user"))
+                .orElse(User.DUMMY_USER);
     }
 
     public void findNearestStations(Context context) {
@@ -36,20 +42,6 @@ public class StationRequestHandler {
                 .toList();
 
         context.json(stationsResponse);
-    }
-
-    record StationResponse(
-            String id,
-            String operator,
-            String startOfServiceDate,
-            Location location,
-            List<Charger> chargers) {
-    }
-
-    private static User getUser(Context context) {
-        return Optional
-                .ofNullable(context.<User>sessionAttribute("current_user"))
-                .orElse(User.DUMMY_USER);
     }
 
     public void stationDetails(Context context) {
@@ -85,14 +77,22 @@ public class StationRequestHandler {
         var addStationReviewRequest = context.bodyValidator(AddStationReviewRequest.class).getOrThrow(err -> new RuntimeException());
         var user = getUser(context);
 
-        app.addStationReview(
+        var review = app.addStationReview(
                 user,
                 new StationId(id),
                 addStationReviewRequest.reviewText
         );
 
-        context.status(HttpStatus.OK);
+        context.json(review).status(HttpStatus.CREATED);
 
+    }
+
+    record StationResponse(
+            String id,
+            String operator,
+            String startOfServiceDate,
+            Location location,
+            List<Charger> chargers) {
     }
 
     private record UpdateStationRequest(String operator) {

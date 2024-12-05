@@ -1,10 +1,9 @@
 package com.comsystoreply.labs.chargingstations.app.usecases;
 
 import com.comsystoreply.labs.chargingstations.app.Permissions;
+import com.comsystoreply.labs.chargingstations.app.UseCase;
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
-import com.comsystoreply.labs.chargingstations.app.ports.driven.error.StationNotFound;
-import com.comsystoreply.labs.chargingstations.app.usecases.error.InvalidStationId;
 
 public class ViewStationDetails implements UseCase {
     private final ForStoringStations stationRepo;
@@ -13,12 +12,8 @@ public class ViewStationDetails implements UseCase {
         this.stationRepo = stationRepo;
     }
 
-    public ChargingStation apply(User user, StationId stationId) {
+    public Station apply(User user, StationId stationId) {
         Permissions.checkAllowed(user, this);
-        try {
-            return stationRepo.get(stationId);
-        } catch (StationNotFound e) {
-            throw new InvalidStationId(this, stationId);
-        }
+        return stationRepo.get(stationId);
     }
 }

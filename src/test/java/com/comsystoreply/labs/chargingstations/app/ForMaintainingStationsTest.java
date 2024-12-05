@@ -22,8 +22,8 @@ public class ForMaintainingStationsTest {
 
     @BeforeEach
     void setup() {
-        app = new ChargingStationsApp(
-                () -> List.of(new ChargingStation(
+        app = new StationFinderApp(
+                () -> List.of(new Station(
                         new StationId("cs-001"),
                         "operator1",
                         LOCATION,

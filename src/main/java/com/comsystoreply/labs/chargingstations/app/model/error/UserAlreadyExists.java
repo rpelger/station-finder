@@ -1,4 +1,4 @@
-package com.comsystoreply.labs.chargingstations.app.usecases.error;
+package com.comsystoreply.labs.chargingstations.app.model.error;
 
 import com.comsystoreply.labs.chargingstations.app.model.UserRegistration;
 

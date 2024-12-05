@@ -1,24 +1,23 @@
 package com.comsystoreply.labs.chargingstations.app.ports.driven;
 
 import com.comsystoreply.labs.chargingstations.app.model.*;
-import com.comsystoreply.labs.chargingstations.app.ports.driven.error.StationNotFound;
 
 import java.util.Collection;
 import java.util.List;
 
 public interface ForStoringStations {
 
-    void saveAll(Collection<ChargingStation> stations);
+    void saveAll(Collection<Station> stations);
 
-    List<ChargingStation> findNear(Location location, Radius radius);
+    List<Station> findNear(Location location, Radius radius);
 
-    ChargingStation get(StationId stationId) throws StationNotFound;
+    Station get(StationId stationId);
 
-    List<ChargingStation> getAll();
+    List<Station> getAll();
 
     boolean exists(StationId stationId);
 
-    void updateOperator(StationId id, String operator) throws StationNotFound;
+    void updateOperator(StationId id, String operator);
 
     void addReview(StationId id, Review review);
 

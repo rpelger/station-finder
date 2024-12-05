@@ -1,15 +1,13 @@
 package com.comsystoreply.labs.chargingstations.app;
 
-import com.comsystoreply.labs.chargingstations.adapters.bna.BnaCsvStationsFileReader;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationRepository;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
 import com.comsystoreply.labs.chargingstations.app.model.*;
-import com.comsystoreply.labs.chargingstations.app.usecases.error.BadCredentials;
-import com.comsystoreply.labs.chargingstations.app.usecases.error.UserAlreadyExists;
+import com.comsystoreply.labs.chargingstations.app.model.error.BadCredentials;
+import com.comsystoreply.labs.chargingstations.app.model.error.UserAlreadyExists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,14 +15,14 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ForManagingUsersTest {
-    private ChargingStationsApp app;
+    private StationFinderApp app;
     private static final Location LOCATION = new Location(
             new Geo(1.0d, 2.0d),
             new Address("a-street", "1", "12345", "X-Town", "NRW", "DE"));
 
     @BeforeEach
     void setup() {
-        app = new ChargingStationsApp(
+        app = new StationFinderApp(
                 List::of,
                 new InMemoryStationRepository(),
                 new InMemoryUserRepository()

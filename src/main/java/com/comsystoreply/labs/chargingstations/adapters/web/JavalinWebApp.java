@@ -1,7 +1,7 @@
 package com.comsystoreply.labs.chargingstations.adapters.web;
 
-import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
-import com.comsystoreply.labs.chargingstations.app.usecases.error.*;
+import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
+import com.comsystoreply.labs.chargingstations.app.model.error.*;
 import io.javalin.Javalin;
 
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ public class JavalinWebApp {
 
     private final Javalin webapp;
 
-    public JavalinWebApp(ChargingStationsApp app) {
+    public JavalinWebApp(StationFinderApp app) {
         var stationRequestHandler = new StationRequestHandler(app);
         var userRequestHandler = new UserRequestHandler(app);
 

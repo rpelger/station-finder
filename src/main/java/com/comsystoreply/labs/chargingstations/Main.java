@@ -4,13 +4,13 @@ import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationReposi
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
 import com.comsystoreply.labs.chargingstations.adapters.bna.BnaCsvStationsRestClient;
 import com.comsystoreply.labs.chargingstations.adapters.web.JavalinWebApp;
-import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
+import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
 import com.comsystoreply.labs.chargingstations.app.model.User;
 
 public class Main {
 
     public static void main(String[] args) {
-        var chargingStationsApp = new ChargingStationsApp(
+        var chargingStationsApp = new StationFinderApp(
                 new BnaCsvStationsRestClient(),
                 new InMemoryStationRepository(),
                 new InMemoryUserRepository().withDummyData()

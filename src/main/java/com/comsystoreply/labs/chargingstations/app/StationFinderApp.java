@@ -7,19 +7,19 @@ import com.comsystoreply.labs.chargingstations.app.usecases.*;
 
 import java.util.List;
 
-public class ChargingStationsApp implements ForAccessingPlatform, ForMaintainingStations, ForFindingStations, ForReviewingStations {
+public class StationFinderApp implements ForAccessingPlatform, ForMaintainingStations, ForFindingStations, ForReviewingStations {
 
     private final RegisterUser registerUser;
     private final AuthenticateUser authenticateUser;
     private final ListAllStations listAllStations;
     private final FindNearestStations findNearestStations;
     private final ViewStationDetails viewStationDetails;
-    private final ImportChargingStations importChargingStations;
+    private final ImportStations importChargingStations;
     private final UpdateStationOperator updateStationOperator;
     private final AddStationReview addStationReview;
     private final ListStationReviews listStationReviews;
 
-    public ChargingStationsApp(
+    public StationFinderApp(
             ForObtainingStations stationLoader,
             ForStoringStations stationRepo,
             ForStoringUsers userRepo) {
@@ -29,7 +29,7 @@ public class ChargingStationsApp implements ForAccessingPlatform, ForMaintaining
         findNearestStations = new FindNearestStations(stationRepo);
         listAllStations = new ListAllStations(stationRepo);
         viewStationDetails = new ViewStationDetails(stationRepo);
-        importChargingStations = new ImportChargingStations(stationLoader, stationRepo);
+        importChargingStations = new ImportStations(stationLoader, stationRepo);
         updateStationOperator = new UpdateStationOperator(stationRepo);
         listStationReviews = new ListStationReviews(stationRepo);
         addStationReview = new AddStationReview(stationRepo);
@@ -46,17 +46,17 @@ public class ChargingStationsApp implements ForAccessingPlatform, ForMaintaining
     }
 
     @Override
-    public List<ChargingStation> findNearestStations(User user, Location location, Radius radius) {
+    public List<Station> findNearestStations(User user, Location location, Radius radius) {
         return findNearestStations.apply(user, location, radius);
     }
 
     @Override
-    public ChargingStation viewStationDetails(User user, StationId stationId) {
+    public Station viewStationDetails(User user, StationId stationId) {
         return viewStationDetails.apply(user, stationId);
     }
 
     @Override
-    public List<ChargingStation> listAll(User user) {
+    public List<Station> listAll(User user) {
         return listAllStations.apply(user);
     }
 
@@ -76,7 +76,7 @@ public class ChargingStationsApp implements ForAccessingPlatform, ForMaintaining
     }
 
     @Override
-    public void addStationReview(User user, StationId stationId, String reviewText) {
-        addStationReview.apply(user, stationId, reviewText);
+    public Review addStationReview(User user, StationId stationId, String reviewText) {
+        return addStationReview.apply(user, stationId, reviewText);
     }
 }

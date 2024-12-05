@@ -1,14 +1,14 @@
 package com.comsystoreply.labs.chargingstations.adapters.web;
 
-import com.comsystoreply.labs.chargingstations.app.ChargingStationsApp;
+import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
 import com.comsystoreply.labs.chargingstations.app.model.UserCredentials;
 import com.comsystoreply.labs.chargingstations.app.model.UserRegistration;
 import io.javalin.http.Context;
 
 public class UserRequestHandler {
-    private final ChargingStationsApp app;
+    private final StationFinderApp app;
 
-    public UserRequestHandler(ChargingStationsApp app) {
+    public UserRequestHandler(StationFinderApp app) {
         this.app = app;
     }
 

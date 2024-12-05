@@ -1,10 +1,9 @@
 package com.comsystoreply.labs.chargingstations.app.ports.driven;
 
-import com.comsystoreply.labs.chargingstations.app.model.ChargingStation;
-import com.comsystoreply.labs.chargingstations.app.ports.driven.error.ImportProcessingFailed;
+import com.comsystoreply.labs.chargingstations.app.model.Station;
 
 import java.util.List;
 
 public interface ForObtainingStations {
-    List<ChargingStation> fetchCurrentStations() throws ImportProcessingFailed;
+    List<Station> fetchCurrentStations();
 }

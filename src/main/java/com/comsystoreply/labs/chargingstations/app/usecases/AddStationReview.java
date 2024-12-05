@@ -1,11 +1,12 @@
 package com.comsystoreply.labs.chargingstations.app.usecases;
 
 import com.comsystoreply.labs.chargingstations.app.Permissions;
+import com.comsystoreply.labs.chargingstations.app.UseCase;
 import com.comsystoreply.labs.chargingstations.app.model.*;
+import com.comsystoreply.labs.chargingstations.app.model.error.InvalidStationId;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
-import com.comsystoreply.labs.chargingstations.app.usecases.error.InvalidStationId;
 
-public class AddStationReview implements UseCase{
+public class AddStationReview implements UseCase {
 
     private final ForStoringStations stationsRepo;
 
@@ -13,12 +14,14 @@ public class AddStationReview implements UseCase{
         this.stationsRepo = stationsRepo;
     }
 
-    public void apply(User user, StationId stationId, String comment) {
+    public Review apply(User user, StationId stationId, String comment) {
         Permissions.checkAllowed(user, this);
-        if(!stationsRepo.exists(stationId)) {
-            throw new InvalidStationId(this, stationId);
+        if (!stationsRepo.exists(stationId)) {
+            throw new InvalidStationId(stationId);
         }
 
-        stationsRepo.addReview(stationId, new Review(user, comment));
+        var review = new Review(user, comment);
+        stationsRepo.addReview(stationId, review);
+        return review;
     }
 }

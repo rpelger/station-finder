@@ -7,5 +7,5 @@ import java.util.List;
 public interface ForReviewingStations {
     List<Review> listStationReviews(User user, StationId id);
 
-    void addStationReview(User user, StationId stationId, String reviewText);
+    Review addStationReview(User user, StationId stationId, String reviewText);
 }

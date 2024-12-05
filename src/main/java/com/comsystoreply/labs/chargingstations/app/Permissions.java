@@ -1,8 +1,8 @@
 package com.comsystoreply.labs.chargingstations.app;
 
 import com.comsystoreply.labs.chargingstations.app.model.User;
+import com.comsystoreply.labs.chargingstations.app.model.error.Unauthorized;
 import com.comsystoreply.labs.chargingstations.app.usecases.*;
-import com.comsystoreply.labs.chargingstations.app.usecases.error.Unauthorized;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -16,7 +16,7 @@ public class Permissions {
             AddStationReview.class, User::isConsumer,
 
             UpdateStationOperator.class, User::isAdmin,
-            ImportChargingStations.class, user -> user.isAdmin() || user.isSystem(),
+            ImportStations.class, user -> user.isAdmin() || user.isSystem(),
             ListAllStations.class, User::isAdmin
     );
 

@@ -1,11 +1,12 @@
 package com.comsystoreply.labs.chargingstations.app.usecases;
 
+import com.comsystoreply.labs.chargingstations.app.UseCase;
 import com.comsystoreply.labs.chargingstations.app.model.User;
 import com.comsystoreply.labs.chargingstations.app.model.UserCredentials;
+import com.comsystoreply.labs.chargingstations.app.model.error.BadCredentials;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringUsers;
-import com.comsystoreply.labs.chargingstations.app.usecases.error.BadCredentials;
 
-public class AuthenticateUser {
+public class AuthenticateUser implements UseCase {
     private final ForStoringUsers userRepo;
 
     public AuthenticateUser(ForStoringUsers userRepo) {

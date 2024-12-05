@@ -1,6 +1,6 @@
 package com.comsystoreply.labs.chargingstations.adapters.bna;
 
-import com.comsystoreply.labs.chargingstations.app.model.ChargingStation;
+import com.comsystoreply.labs.chargingstations.app.model.Station;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForObtainingStations;
 import io.badgod.jayreq.JayReq;
 
@@ -18,7 +18,7 @@ public class BnaCsvStationsRestClient implements ForObtainingStations {
     }
 
     @Override
-    public List<ChargingStation> fetchCurrentStations() {
+    public List<Station> fetchCurrentStations() {
         return JayReq.get(BNA_DATA_URL)
                 .body((status, headers, body) -> csvStationParser.parse(body))
                 .orElse(Collections.emptyList());

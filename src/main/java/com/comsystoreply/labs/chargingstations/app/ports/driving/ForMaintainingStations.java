@@ -5,7 +5,7 @@ import com.comsystoreply.labs.chargingstations.app.model.*;
 import java.util.List;
 
 public interface ForMaintainingStations {
-    List<ChargingStation> listAll(User user);
+    List<Station> listAll(User user);
 
     void importCurrentStations(User user);
 

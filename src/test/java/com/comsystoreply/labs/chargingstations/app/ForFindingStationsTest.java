@@ -1,6 +1,5 @@
 package com.comsystoreply.labs.chargingstations.app;
 
-import com.comsystoreply.labs.chargingstations.adapters.bna.BnaCsvStationsRestClient;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationRepository;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
 import com.comsystoreply.labs.chargingstations.app.model.*;
@@ -25,8 +24,8 @@ public class ForFindingStationsTest {
 
     @BeforeEach
     void setup() {
-        ChargingStationsApp app = new ChargingStationsApp(
-                () -> List.of(new ChargingStation(
+        StationFinderApp app = new StationFinderApp(
+                () -> List.of(new Station(
                         new StationId("cs-001"),
                         "operator1",
                         LOCATION,

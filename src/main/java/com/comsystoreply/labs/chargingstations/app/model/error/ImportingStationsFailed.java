@@ -1,4 +1,4 @@
-package com.comsystoreply.labs.chargingstations.app.usecases.error;
+package com.comsystoreply.labs.chargingstations.app.model.error;
 
 public class ImportingStationsFailed extends RuntimeException {
     public ImportingStationsFailed(Exception cause) {
