@@ -17,11 +17,11 @@ public class JavalinWebApp {
 
         // @formatter:off
         this.webapp = Javalin.create()
-                .get ("/charging-stations/near/{lat}/{long}", stationRequestHandler::findNearestStations)
-                .get ("/charging-stations/{id}", stationRequestHandler::stationDetails)
-                .get ("/charging-stations/{id}/reviews", stationRequestHandler::stationReviews)
-                .put ("/charging-stations/{id}", stationRequestHandler::updateStationOperator)
-                .post("/charging-stations/{id}/reviews", stationRequestHandler::addStationReview)
+                .get ("/stations/near/{lat}/{long}", stationRequestHandler::findNearestStations)
+                .get ("/stations/{id}", stationRequestHandler::stationDetails)
+                .get ("/stations/{id}/reviews", stationRequestHandler::stationReviews)
+                .put ("/stations/{id}", stationRequestHandler::updateStationOperator)
+                .post("/stations/{id}/reviews", stationRequestHandler::addStationReview)
 
                 .post("/auth/registrations", userRequestHandler::registerNewUser)
                 .post("/auth/authentications", userRequestHandler::authenticateUser)

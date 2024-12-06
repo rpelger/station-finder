@@ -1,8 +1,9 @@
 package com.comsystoreply.labs.chargingstations;
 
+import com.comsystoreply.labs.chargingstations.adapters.bna.BnaCsvStationsFileReader;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationRepository;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
-import com.comsystoreply.labs.chargingstations.adapters.bna.BnaCsvStationsRestClient;
+import com.comsystoreply.labs.chargingstations.adapters.job.ImportStationsJob;
 import com.comsystoreply.labs.chargingstations.adapters.web.JavalinWebApp;
 import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
 import com.comsystoreply.labs.chargingstations.app.model.User;
@@ -10,16 +11,19 @@ import com.comsystoreply.labs.chargingstations.app.model.User;
 public class Main {
 
     public static void main(String[] args) {
-        var chargingStationsApp = new StationFinderApp(
-                new BnaCsvStationsRestClient(),
+        // Configurator
+        var app = new StationFinderApp(
+                new BnaCsvStationsFileReader(),
                 new InMemoryStationRepository(),
                 new InMemoryUserRepository().withDummyData()
         );
 
-        var webapp = new JavalinWebApp(chargingStationsApp);
+        // Driving Adapters
+        var importStationsJob = new ImportStationsJob(app, User.SYSTEM_USER);
+        var webApp = new JavalinWebApp(app);
 
-        chargingStationsApp.importCurrentStations(User.SYSTEM_USER);
-        webapp.start(8080);
+        importStationsJob.runOnceImmediately();
+        webApp.start(8080);
     }
 
 }
