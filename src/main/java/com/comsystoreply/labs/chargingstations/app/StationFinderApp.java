@@ -46,8 +46,8 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
     }
 
     @Override
-    public List<Station> findNearestStations(User user, Location location, Radius radius) {
-        return findNearestStations.apply(user, location, radius);
+    public List<Station> findNearestStations(User user, Geo geo, Radius radius) {
+        return findNearestStations.apply(user, geo, radius);
     }
 
     @Override

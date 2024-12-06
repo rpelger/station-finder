@@ -9,7 +9,7 @@ public interface ForStoringStations {
 
     void saveAll(Collection<Station> stations);
 
-    List<Station> findNear(Location location, Radius radius);
+    List<Station> findNear(Geo geo, Radius radius);
 
     Station get(StationId stationId);
 

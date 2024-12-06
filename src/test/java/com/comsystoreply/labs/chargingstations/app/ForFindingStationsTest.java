@@ -16,11 +16,11 @@ import static org.hamcrest.Matchers.hasSize;
 
 public class ForFindingStationsTest {
 
-    private ForFindingStations port;
-
     private static final Location LOCATION = new Location(
             new Geo(1.0d, 2.0d),
             new Address("a-street", "1", "12345", "X-Town", "NRW", "DE"));
+
+    private ForFindingStations port;
 
     @BeforeEach
     void setup() {
@@ -45,11 +45,9 @@ public class ForFindingStationsTest {
     void should_find_nearest_stations_after_import() {
         var user = User.DUMMY_USER;
         var radius = new Radius(10.0d);
-        var location = new Location(
-                new Geo(20.0d, 40.0d),
-                new Address("A-Street", "49", "53173", "Bonn", "NRW", "Germany"));
+        var geo = new Geo(20.0d, 40.0d);
 
-        var stations = port.findNearestStations(user, location, radius);
+        var stations = port.findNearestStations(user, geo, radius);
 
         assertThat(stations, hasSize(greaterThan(0)));
     }

@@ -23,22 +23,18 @@ public class StationRequestHandler {
     }
 
     public void findNearestStations(Context context) {
-        Double lat = context.pathParamAsClass("lat", Double.class).getOrThrow(err -> new RuntimeException());
-        Double lon = context.pathParamAsClass("long", Double.class).getOrThrow(err -> new RuntimeException());
+        Double lat = context.pathParamAsClass("lat", Double.class).getOrThrow(InvalidRequestParam::new);
+        Double lon = context.pathParamAsClass("long", Double.class).getOrThrow(InvalidRequestParam::new);
         Double rad = context.queryParamAsClass("radius", Double.class).getOrDefault(10.0d);
 
         var user = getUser(context);
-        var location = new Location(new Geo(lat, lon), new Address("X-Street", "47", "80992", "Bonn", "NRW", "Germany"));
+        var geo = new Geo(lat, lon);
         var radius = new Radius(rad);
+
         var stationsResponse = app
-                .findNearestStations(user, location, radius)
+                .findNearestStations(user, geo, radius)
                 .stream()
-                .map(s -> new StationResponse(
-                        s.id().value(),
-                        s.operator(),
-                        s.startOfService(),
-                        s.location(),
-                        s.chargers()))
+                .map(StationResponse::new)
                 .toList();
 
         context.json(stationsResponse);
@@ -87,12 +83,22 @@ public class StationRequestHandler {
 
     }
 
+    public void listStations(Context context) {
+        var user = getUser(context);
+        var stations = app.listAll(user);
+
+        context.json(stations);
+    }
+
     record StationResponse(
             String id,
             String operator,
             String startOfServiceDate,
             Location location,
             List<Charger> chargers) {
+        StationResponse(Station station) {
+            this(station.id().value(), station.operator(), station.startOfService(), station.location(), station.chargers());
+        }
     }
 
     private record UpdateStationRequest(String operator) {

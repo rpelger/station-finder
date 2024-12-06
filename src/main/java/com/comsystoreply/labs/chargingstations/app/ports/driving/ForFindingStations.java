@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ForFindingStations {
 
-    List<Station> findNearestStations(User user, Location location, Radius radius);
+    List<Station> findNearestStations(User user, Geo geo, Radius radius);
 
     Station viewStationDetails(User user, StationId stationId);
 }

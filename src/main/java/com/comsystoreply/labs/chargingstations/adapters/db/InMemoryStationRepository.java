@@ -28,7 +28,7 @@ public class InMemoryStationRepository implements ForStoringStations {
     }
 
     @Override
-    public List<Station> findNear(Location location, Radius radius) {
+    public List<Station> findNear(Geo geo, Radius radius) {
         return stationsMap.values().stream()
                 .sorted(Comparator.comparing(s -> s.id().value()))
                 .limit(10)
