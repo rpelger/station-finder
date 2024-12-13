@@ -12,7 +12,7 @@ public class ViewStationDetails implements UseCase {
     }
 
     public Station apply(User user, StationId stationId) {
-        Permissions.checkAllowed(user, this);
+        Permissions.checkAllowed(user::isConsumer);
         return stationRepo.get(stationId);
     }
 }

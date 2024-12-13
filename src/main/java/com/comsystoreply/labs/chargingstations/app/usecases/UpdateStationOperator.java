@@ -13,7 +13,7 @@ public class UpdateStationOperator implements UseCase {
     }
 
     public void apply(User user, StationId stationId, String operator) {
-        Permissions.checkAllowed(user, this);
+        Permissions.checkAllowed(user::isAdmin);
         stationRepo.updateOperator(stationId, operator);
     }
 }

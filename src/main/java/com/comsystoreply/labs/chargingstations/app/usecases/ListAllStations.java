@@ -15,7 +15,7 @@ public class ListAllStations implements UseCase {
     }
 
     public List<Station> apply(User user) {
-        Permissions.checkAllowed(user, this);
+        Permissions.checkAllowed(user::isAdmin);
         return stationsRepo.getAll();
     }
 }

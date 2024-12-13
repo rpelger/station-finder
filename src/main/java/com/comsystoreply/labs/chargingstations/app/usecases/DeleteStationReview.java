@@ -16,7 +16,7 @@ public class DeleteStationReview implements UseCase {
     public void apply(User user, ReviewId reviewId) {
         var maybeReview = stationRepo.find(reviewId);
         if (maybeReview.isPresent()) {
-            Permissions.checkAllowed(user, this, () -> user.isAdmin() || user.isConsumer() && maybeReview.get().createdBy().equals(user.id()));
+            Permissions.checkAllowed(() -> user.isAdmin() || user.isConsumer() && maybeReview.get().createdBy().equals(user.id()));
             stationRepo.deleteReview(reviewId);
         }
     }

@@ -14,7 +14,7 @@ public class AddStationReview implements UseCase {
     }
 
     public Review apply(User user, StationId stationId, String comment) {
-        Permissions.checkAllowed(user, this);
+        Permissions.checkAllowed(user::isConsumer);
         if (!stationsRepo.exists(stationId)) {
             throw new InvalidStationId(stationId);
         }

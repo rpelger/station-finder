@@ -16,7 +16,7 @@ public class ImportStations implements UseCase {
     }
 
     public void apply(User user) {
-        Permissions.checkAllowed(user, this);
+        Permissions.checkAllowed(() -> user.isAdmin() || user.isSystem());
         var stations = stationLoader.fetchCurrentStations();
         stationRepo.saveAll(stations);
     }

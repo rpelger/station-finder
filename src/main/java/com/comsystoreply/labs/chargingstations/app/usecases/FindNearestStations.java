@@ -14,7 +14,7 @@ public class FindNearestStations implements UseCase {
     }
 
     public List<Station> apply(User user, Geo geo, Radius radius) {
-        Permissions.checkAllowed(user, this);
+        Permissions.checkAllowed(user::isConsumer);
         return stationRepo.findNear(geo, radius);
     }
 }
