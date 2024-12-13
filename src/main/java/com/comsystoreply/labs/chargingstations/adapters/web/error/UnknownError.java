@@ -1,4 +1,4 @@
-package com.comsystoreply.labs.chargingstations.adapters.web;
+package com.comsystoreply.labs.chargingstations.adapters.web.error;
 
 import io.javalin.http.Context;
 

@@ -10,9 +10,15 @@ public class BnaCsvStationsFileReader implements ForObtainingStations {
 
     private final BnaCsvStationParser parser = new BnaCsvStationParser();
 
+    private final String filename;
+
+    public BnaCsvStationsFileReader(String filename) {
+        this.filename = filename;
+    }
+
     @Override
     public List<Station> fetchCurrentStations() {
-        try (var input = getClass().getResourceAsStream("/Ladesaeulenregister_BNetzA_2024-09-01_v2.csv")) {
+        try (var input = getClass().getResourceAsStream(filename)) {
             var content = new String(input.readAllBytes());
             return parser.parse(content);
         } catch (Exception e) {

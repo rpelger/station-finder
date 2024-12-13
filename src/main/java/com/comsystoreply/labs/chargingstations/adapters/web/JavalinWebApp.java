@@ -1,5 +1,7 @@
 package com.comsystoreply.labs.chargingstations.adapters.web;
 
+import com.comsystoreply.labs.chargingstations.adapters.web.error.UnknownError;
+import com.comsystoreply.labs.chargingstations.adapters.web.error.*;
 import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
 import com.comsystoreply.labs.chargingstations.app.model.error.*;
 import io.javalin.Javalin;

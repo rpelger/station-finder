@@ -14,17 +14,12 @@ public class InMemoryStationRepository implements ForStoringStations {
     private final Map<StationId, Station> stationsMap = new HashMap<>();
     private final Map<StationId, List<Review>> reviewsMap = new HashMap<>();
 
-    private static Station conflictError(Station cs1, Station cs2) {
-        throw new RuntimeException("Conflict error");
-    }
-
     @Override
     public void saveAll(Collection<Station> stations) {
         stationsMap.clear();
         stationsMap.putAll(stations.stream().collect(toMap(
                 Station::id,
-                Function.identity(),
-                InMemoryStationRepository::conflictError)));
+                Function.identity())));
     }
 
     @Override
@@ -63,13 +58,9 @@ public class InMemoryStationRepository implements ForStoringStations {
 
     @Override
     public void addReview(StationId id, Review review) {
-        if (reviewsMap.containsKey(id)) {
-            var reviews = reviewsMap.get(id);
-            reviews.add(review);
-            reviewsMap.put(id, reviews);
-        } else {
-            reviewsMap.put(id, List.of(review));
-        }
+        var reviews = reviewsMap.getOrDefault(id, new ArrayList<>());
+        reviews.add(review);
+        reviewsMap.put(id, reviews);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.comsystoreply.labs.chargingstations.app.usecases;
 
-import com.comsystoreply.labs.chargingstations.app.Permissions;
 import com.comsystoreply.labs.chargingstations.app.UseCase;
 import com.comsystoreply.labs.chargingstations.app.model.StationId;
 import com.comsystoreply.labs.chargingstations.app.model.User;

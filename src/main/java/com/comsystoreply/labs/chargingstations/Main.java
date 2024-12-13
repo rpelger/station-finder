@@ -13,9 +13,9 @@ public class Main {
     public static void main(String[] args) {
         // Configurator
         var app = new StationFinderApp(
-                new BnaCsvStationsFileReader(),
+                new BnaCsvStationsFileReader("/Ladesaeulenregister_BNetzA_2024-09-01_v2.csv"),
                 new InMemoryStationRepository(),
-                new InMemoryUserRepository().withDummyData()
+                new InMemoryUserRepository()
         );
 
         // Driving Adapters

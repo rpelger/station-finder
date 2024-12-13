@@ -11,8 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 
 public class ForFindingStationsTest {
 
@@ -43,12 +42,20 @@ public class ForFindingStationsTest {
 
     @Test
     void should_find_nearest_stations_after_import() {
-        var user = User.DUMMY_USER;
+        var user = User.CONSUMER_USER;
         var radius = new Radius(10.0d);
         var geo = new Geo(20.0d, 40.0d);
 
         var stations = port.findNearestStations(user, geo, radius);
 
         assertThat(stations, hasSize(greaterThan(0)));
+    }
+
+    @Test
+    void should_view_station_details() {
+        var station = port.findNearestStations(User.CONSUMER_USER, new Geo(20.0d, 40.0d), new Radius(10.0d)).getFirst();
+        var stationDetails = port.viewStationDetails(User.CONSUMER_USER, station.id());
+
+        assertThat(station, is(equalTo(stationDetails)));
     }
 }

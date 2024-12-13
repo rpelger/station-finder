@@ -1,8 +1,8 @@
-package com.comsystoreply.labs.chargingstations.app;
+package com.comsystoreply.labs.chargingstations.app.usecases;
 
+import com.comsystoreply.labs.chargingstations.app.UseCase;
 import com.comsystoreply.labs.chargingstations.app.model.User;
 import com.comsystoreply.labs.chargingstations.app.model.error.Unauthorized;
-import com.comsystoreply.labs.chargingstations.app.usecases.*;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -22,13 +22,15 @@ public class Permissions {
 
     private static final Function<User, Boolean> DENY_BY_DEFAULT = any -> false;
 
-    public static boolean isAllowed(User user, UseCase usecase) {
-        return ALLOWANCES.getOrDefault(usecase.getClass(), DENY_BY_DEFAULT).apply(user);
-    }
-
     public static void checkAllowed(User user, UseCase useCase) {
         if (!isAllowed(user, useCase)) {
             throw new Unauthorized(useCase, user);
         }
     }
+
+    private static boolean isAllowed(User user, UseCase usecase) {
+        return ALLOWANCES.getOrDefault(usecase.getClass(), DENY_BY_DEFAULT).apply(user);
+    }
+
+
 }

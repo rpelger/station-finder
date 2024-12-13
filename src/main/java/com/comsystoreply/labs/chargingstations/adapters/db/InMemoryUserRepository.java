@@ -18,12 +18,6 @@ public class InMemoryUserRepository implements ForStoringUsers {
         return user -> user.email().equals(registration.credentials().email());
     }
 
-    public final ForStoringUsers withDummyData() {
-        usersMap.put(new UserId(1L), new User(new UserId(1L), "r.peglger@reply.de", "test1234", "Robert", "Pelger", Set.of(User.Role.ADMIN)));
-        usersMap.put(new UserId(2L), new User(new UserId(2L), "pelgero@gmail.com", "test1234", "Roberto", "Pelegrini", Set.of(User.Role.CONSUMER)));
-        return this;
-    }
-
     @Override
     public User createNew(UserRegistration registration) {
         if (usersMap.values().stream().anyMatch(byEmailOf(registration))) {

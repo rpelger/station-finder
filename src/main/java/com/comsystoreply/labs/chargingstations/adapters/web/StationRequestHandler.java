@@ -1,5 +1,6 @@
 package com.comsystoreply.labs.chargingstations.adapters.web;
 
+import com.comsystoreply.labs.chargingstations.adapters.web.error.InvalidRequestParam;
 import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import io.javalin.http.Context;
@@ -19,7 +20,7 @@ public class StationRequestHandler {
     private static User getUser(Context context) {
         return Optional
                 .ofNullable(context.<User>sessionAttribute("current_user"))
-                .orElse(User.DUMMY_USER);
+                .orElse(User.CONSUMER_USER);
     }
 
     public void findNearestStations(Context context) {

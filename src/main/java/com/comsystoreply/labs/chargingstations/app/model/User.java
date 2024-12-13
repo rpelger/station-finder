@@ -11,7 +11,6 @@ public record User(
         Set<Role> roles) {
 
 
-
     public enum Role {
         CONSUMER,
         ADMIN,
@@ -25,7 +24,7 @@ public record User(
             "Charging Stations",
             "System",
             Set.of(User.Role.SYSTEM));
-    public static final User DUMMY_USER = new User(
+    public static final User CONSUMER_USER = new User(
             new UserId(-99L),
             "test@example.com",
             "test",
@@ -39,7 +38,6 @@ public record User(
             "Armin",
             "Admin",
             Set.of(User.Role.ADMIN));
-            ;
 
 
     public UserId id() {
@@ -56,6 +54,6 @@ public record User(
     }
 
     public boolean isSystem() {
-        return  roles.contains(Role.SYSTEM);
+        return roles.contains(Role.SYSTEM);
     }
 }
