@@ -6,6 +6,7 @@ import com.comsystoreply.labs.chargingstations.app.model.error.Unauthorized;
 
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Permissions {
 
@@ -23,7 +24,11 @@ public class Permissions {
     private static final Function<User, Boolean> DENY_BY_DEFAULT = any -> false;
 
     public static void checkAllowed(User user, UseCase useCase) {
-        if (!isAllowed(user, useCase)) {
+        checkAllowed(user, useCase, () -> isAllowed(user, useCase));
+    }
+
+    public static void checkAllowed(User user, UseCase useCase, Supplier<Boolean> condition) {
+        if (!condition.get()) {
             throw new Unauthorized(useCase, user);
         }
     }
@@ -31,6 +36,4 @@ public class Permissions {
     private static boolean isAllowed(User user, UseCase usecase) {
         return ALLOWANCES.getOrDefault(usecase.getClass(), DENY_BY_DEFAULT).apply(user);
     }
-
-
 }

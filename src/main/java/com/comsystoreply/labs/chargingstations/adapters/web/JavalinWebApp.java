@@ -26,6 +26,7 @@ public class JavalinWebApp {
                 .get ("/stations/{id}/reviews", stationRequestHandler::stationReviews)
                 .put ("/stations/{id}", stationRequestHandler::updateStationOperator)
                 .post("/stations/{id}/reviews", stationRequestHandler::addStationReview)
+                .delete("/stations/{id}/reviews/{reviewId}", stationRequestHandler::deleteStationReview)
 
                 .post("/auth/registrations", userRequestHandler::registerNewUser)
                 .post("/auth/authentications", userRequestHandler::authenticateUser)

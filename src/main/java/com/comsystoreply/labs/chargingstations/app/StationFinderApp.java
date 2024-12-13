@@ -18,6 +18,7 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
     private final UpdateStationOperator updateStationOperator;
     private final AddStationReview addStationReview;
     private final ListStationReviews listStationReviews;
+    private final DeleteStationReview deleteStationReview;
 
     public StationFinderApp(
             ForObtainingStations stationLoader,
@@ -33,6 +34,7 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
         updateStationOperator = new UpdateStationOperator(stationRepo);
         listStationReviews = new ListStationReviews(stationRepo);
         addStationReview = new AddStationReview(stationRepo);
+        deleteStationReview = new DeleteStationReview(stationRepo);
     }
 
     @Override
@@ -78,5 +80,10 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
     @Override
     public Review addStationReview(User user, StationId stationId, String reviewText) {
         return addStationReview.apply(user, stationId, reviewText);
+    }
+
+    @Override
+    public void deleteStationReview(User user, ReviewId reviewId) {
+        deleteStationReview.apply(user, reviewId);
     }
 }

@@ -67,4 +67,24 @@ public class InMemoryStationRepository implements ForStoringStations {
     public List<Review> findAllStationReviews(StationId stationId) {
         return reviewsMap.getOrDefault(stationId, List.of());
     }
+
+    @Override
+    public void deleteReview(ReviewId reviewId) {
+        reviewsMap.entrySet().stream()
+                .filter(entry -> entry.getValue().stream().anyMatch(review -> review.id().equals(reviewId)))
+                .forEach(entry -> entry.setValue(withRemoved(reviewId, entry.getValue())));
+    }
+
+    @Override
+    public Optional<Review> find(ReviewId reviewId) {
+        return reviewsMap.entrySet().stream()
+                .flatMap(entry -> entry.getValue().stream().filter(review -> review.id().equals(reviewId)))
+                .findFirst();
+    }
+
+    private List<Review> withRemoved(ReviewId reviewId, List<Review> value) {
+        var newList = new ArrayList<>(value);
+        newList.removeIf(review -> review.id().equals(reviewId));
+        return newList;
+    }
 }

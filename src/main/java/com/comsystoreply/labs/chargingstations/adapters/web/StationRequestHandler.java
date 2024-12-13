@@ -5,6 +5,7 @@ import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -89,6 +90,13 @@ public class StationRequestHandler {
         var stations = app.listAll(user);
 
         context.json(stations);
+    }
+
+    public void deleteStationReview(Context context) {
+       var user = getUser(context);
+       // var stationId = context.pathParamAsClass("id", String.class).getOrThrow(err -> new RuntimeException());
+       var reviewId = context.pathParamAsClass("reviewId", String.class).getOrThrow(err -> new RuntimeException());
+       app.deleteStationReview(user, new ReviewId(reviewId));
     }
 
     record StationResponse(

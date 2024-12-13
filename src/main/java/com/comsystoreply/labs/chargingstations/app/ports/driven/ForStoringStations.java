@@ -2,8 +2,7 @@ package com.comsystoreply.labs.chargingstations.app.ports.driven;
 
 import com.comsystoreply.labs.chargingstations.app.model.*;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public interface ForStoringStations {
 
@@ -19,7 +18,11 @@ public interface ForStoringStations {
 
     void updateOperator(StationId id, String operator);
 
+    List<Review> findAllStationReviews(StationId stationId);
+
     void addReview(StationId id, Review review);
 
-    List<Review> findAllStationReviews(StationId stationId);
+    void deleteReview(ReviewId reviewId);
+
+    Optional<Review> find(ReviewId reviewId);
 }
