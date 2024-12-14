@@ -20,7 +20,7 @@ public class StationRequestHandler {
     private static User getUser(Context context) {
         return Optional
                 .ofNullable(context.<User>sessionAttribute("current_user"))
-                .orElse(User.CONSUMER_USER);
+                .orElse(User.GUEST_USER);
     }
 
     public void findNearestStations(Context context) {

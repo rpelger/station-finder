@@ -11,12 +11,6 @@ public record User(
         Set<Role> roles) {
 
 
-    public enum Role {
-        CONSUMER,
-        ADMIN,
-        SYSTEM
-    }
-
     public static final User SYSTEM_USER = new User(
             new UserId(-1L),
             "system",
@@ -38,12 +32,17 @@ public record User(
             "Armin",
             "Admin",
             Set.of(User.Role.ADMIN));
-
+    public static final User GUEST_USER = new User(
+            new UserId(0L),
+            "anonymous",
+            null,
+            "Anonymous",
+            "",
+            Set.of(User.Role.GUEST));
 
     public UserId id() {
         return id;
     }
-
 
     public boolean isConsumer() {
         return roles.contains(Role.CONSUMER);
@@ -55,5 +54,15 @@ public record User(
 
     public boolean isSystem() {
         return roles.contains(Role.SYSTEM);
+    }
+
+    public boolean isGuest() {
+        return roles.contains(Role.GUEST);
+    }
+
+    public enum Role {
+        CONSUMER,
+        ADMIN,
+        GUEST, SYSTEM
     }
 }

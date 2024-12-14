@@ -36,6 +36,7 @@ class ApplicationPermissionsTest {
         var updateStationOperator = named("UpdateStationOperator", (Consumer<User>) (user) -> app.updateStationOperator(user, STATION_ID, "op-neu"));
         var listAllStations = named("ListAllStations", (Consumer<User>) (user) -> app.listAll(user));
 
+        Named<User> aGuest = named("'GUEST'", User.GUEST_USER);
         Named<User> aConsumer = named("'CONSUMER'", User.CONSUMER_USER);
         Named<User> anAdmin = named("'ADMIN'", User.ADMIN_USER);
         Named<User> aSystemUser = named("'SYSTEM_USER'", User.SYSTEM_USER);
@@ -45,6 +46,15 @@ class ApplicationPermissionsTest {
 
 
         return Stream.of(
+                // GUEST
+                arguments(aGuest, isAllowedTo, findNearestStations),
+                arguments(aGuest, isNotAllowedTo, viewStationDetails),
+                arguments(aGuest, isNotAllowedTo, listStationReviews),
+                arguments(aGuest, isNotAllowedTo, addStationReview),
+                arguments(aGuest, isNotAllowedTo, updateStationOperator),
+                arguments(aGuest, isNotAllowedTo, listAllStations),
+                arguments(aGuest, isNotAllowedTo, importStations),
+
                 // CONSUMER
                 arguments(aConsumer, isAllowedTo, findNearestStations),
                 arguments(aConsumer, isAllowedTo, viewStationDetails),
