@@ -4,6 +4,7 @@ import com.comsystoreply.labs.chargingstations.app.model.Station;
 import com.comsystoreply.labs.chargingstations.app.model.error.ImportingStationsFailed;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.ForObtainingStations;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class BnaCsvStationsFileReader implements ForObtainingStations {
@@ -19,7 +20,7 @@ public class BnaCsvStationsFileReader implements ForObtainingStations {
     @Override
     public List<Station> fetchCurrentStations() {
         try (var input = getClass().getResourceAsStream(filename)) {
-            var content = new String(input.readAllBytes());
+            var content = new String(input.readAllBytes(), StandardCharsets.ISO_8859_1);
             return parser.parse(content);
         } catch (Exception e) {
             throw new ImportingStationsFailed(e);

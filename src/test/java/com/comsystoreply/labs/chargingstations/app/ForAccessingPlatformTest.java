@@ -5,6 +5,7 @@ import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepositor
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import com.comsystoreply.labs.chargingstations.app.model.error.BadCredentials;
 import com.comsystoreply.labs.chargingstations.app.model.error.UserAlreadyExists;
+import com.comsystoreply.labs.chargingstations.app.ports.driving.ForAccessingPlatform;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,15 +15,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class ForManagingUsersTest {
-    private StationFinderApp app;
-    private static final Location LOCATION = new Location(
-            new Geo(1.0d, 2.0d),
-            new Address("a-street", "1", "12345", "X-Town", "NRW", "DE"));
+public class ForAccessingPlatformTest {
+    private ForAccessingPlatform port;
 
     @BeforeEach
     void setup() {
-        app = new StationFinderApp(
+        port = new StationFinderApp(
                 List::of,
                 new InMemoryStationRepository(),
                 new InMemoryUserRepository()
@@ -31,7 +29,7 @@ public class ForManagingUsersTest {
 
     @Test
     void should_register_new_user_as_consumer() {
-        var user = app.regigsterNewUser(
+        var user = port.regigsterNewUser(
                 new UserRegistration(
                         new UserCredentials("john@test.de", "test1234"),
                         "John", "Doe"
@@ -45,9 +43,9 @@ public class ForManagingUsersTest {
     @Test
     void should_conflict_when_user_with_same_email_exists() {
         String email = "john@test.de";
-        app.regigsterNewUser(new UserRegistration(new UserCredentials(email, "a"), "John", "Doe"));
+        port.regigsterNewUser(new UserRegistration(new UserCredentials(email, "a"), "John", "Doe"));
         try {
-            app.regigsterNewUser(new UserRegistration(new UserCredentials(email, "b"), "Jane", "Fox"));
+            port.regigsterNewUser(new UserRegistration(new UserCredentials(email, "b"), "Jane", "Fox"));
             fail("Should have thrown here");
         } catch (Exception e) {
             assertThat(e, instanceOf(UserAlreadyExists.class));
@@ -56,8 +54,8 @@ public class ForManagingUsersTest {
 
     @Test
     void should_authenticate_existing_user_with_valid_credentials() {
-        app.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"), "John", "Doe"));
-        var user = app.authenticateUser(new UserCredentials("john@example.com", "test1234"));
+        port.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"), "John", "Doe"));
+        var user = port.authenticateUser(new UserCredentials("john@example.com", "test1234"));
 
         assertThat(user, is(not(nullValue())));
         assertThat(user.email(), is("john@example.com"));
@@ -65,9 +63,9 @@ public class ForManagingUsersTest {
 
     @Test
     void should_error_when_authenticating_with_incorrect_password() {
-        app.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"), "John", "Doe"));
+        port.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"), "John", "Doe"));
         try {
-            app.authenticateUser(new UserCredentials("john@example.com", "test6666"));
+            port.authenticateUser(new UserCredentials("john@example.com", "test6666"));
         } catch (Exception e) {
             assertThat(e, instanceOf(BadCredentials.class));
         }
@@ -75,9 +73,9 @@ public class ForManagingUsersTest {
 
     @Test
     void should_error_when_authenticating_with_unknown_email() {
-        app.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"), "John", "Doe"));
+        port.regigsterNewUser(new UserRegistration(new UserCredentials("john@example.com", "test1234"), "John", "Doe"));
         try {
-            app.authenticateUser(new UserCredentials("hugo@example.com", "test1234"));
+            port.authenticateUser(new UserCredentials("hugo@example.com", "test1234"));
         } catch (Exception e) {
             assertThat(e, instanceOf(BadCredentials.class));
         }
