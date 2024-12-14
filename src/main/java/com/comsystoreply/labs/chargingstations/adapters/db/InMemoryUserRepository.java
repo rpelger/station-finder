@@ -19,7 +19,7 @@ public class InMemoryUserRepository implements ForStoringUsers {
     }
 
     @Override
-    public User createNew(UserRegistration registration) {
+    public User createNewFrom(UserRegistration registration) {
         if (usersMap.values().stream().anyMatch(byEmailOf(registration))) {
             throw new UserAlreadyExists(registration);
         }

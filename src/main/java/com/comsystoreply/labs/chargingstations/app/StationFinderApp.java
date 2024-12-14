@@ -21,7 +21,7 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
     private final DeleteStationReview deleteStationReview;
 
     public StationFinderApp(
-            ForObtainingStations stationLoader,
+            ForFetchingStations stationLoader,
             ForStoringStations stationRepo,
             ForStoringUsers userRepo) {
 

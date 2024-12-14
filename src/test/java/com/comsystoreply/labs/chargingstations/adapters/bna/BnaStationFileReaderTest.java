@@ -12,7 +12,7 @@ class BnaStationFileReaderTest {
     @Test
     void should_load_bna_csv_file_with_stations() {
         var stationLoader = new BnaCsvStationsFileReader("/Ladesaeulenregister_BNetzA_2024-09-01_v2.csv");
-        var result = stationLoader.fetchCurrentStations();
+        var result = stationLoader.fetchStations();
 
         assertThat(result, is(not(nullValue())));
         assertThat(result, hasSize(greaterThan(0)));
@@ -23,7 +23,7 @@ class BnaStationFileReaderTest {
     void should_fail_when_file_not_exists() {
         var stationLoader = new BnaCsvStationsFileReader("/does-not-exist.csv");
         try {
-            var test = stationLoader.fetchCurrentStations();
+            var test = stationLoader.fetchStations();
             fail("Should have thrown");
         } catch (Exception e) {
             assertThat(e, is(instanceOf(ImportingStationsFailed.class)));

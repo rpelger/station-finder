@@ -13,7 +13,7 @@ public class RegisterUser implements UseCase {
     }
 
     public User apply(UserRegistration registration) {
-        return userRepo.createNew(registration);
+        return userRepo.createNewFrom(registration);
     }
 
 }

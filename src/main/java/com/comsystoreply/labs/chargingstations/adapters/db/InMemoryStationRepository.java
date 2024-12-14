@@ -64,7 +64,7 @@ public class InMemoryStationRepository implements ForStoringStations {
     }
 
     @Override
-    public List<Review> findAllStationReviews(StationId stationId) {
+    public List<Review> findReviewsForStation(StationId stationId) {
         return reviewsMap.getOrDefault(stationId, List.of());
     }
 
@@ -76,7 +76,7 @@ public class InMemoryStationRepository implements ForStoringStations {
     }
 
     @Override
-    public Optional<Review> find(ReviewId reviewId) {
+    public Optional<Review> findReviewById(ReviewId reviewId) {
         return reviewsMap.entrySet().stream()
                 .flatMap(entry -> entry.getValue().stream().filter(review -> review.id().equals(reviewId)))
                 .findFirst();

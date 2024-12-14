@@ -15,6 +15,6 @@ public class ListStationReviews implements UseCase {
 
     public List<Review> apply(User user, StationId stationId) {
         Permissions.checkAllowed(user::isConsumer);
-        return stationRepo.findAllStationReviews(stationId);
+        return stationRepo.findReviewsForStation(stationId);
     }
 }

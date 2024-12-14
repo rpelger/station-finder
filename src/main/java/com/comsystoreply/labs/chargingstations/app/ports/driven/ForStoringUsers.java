@@ -5,7 +5,7 @@ import com.comsystoreply.labs.chargingstations.app.model.*;
 import java.util.Optional;
 
 public interface ForStoringUsers {
-    User createNew(UserRegistration userRegistration);
+    User createNewFrom(UserRegistration userRegistration);
 
     Optional<User> findBy(UserCredentials credentials);
 }

@@ -6,6 +6,8 @@ import java.util.*;
 
 public interface ForStoringStations {
 
+    // Stations
+    // --------
     void saveAll(Collection<Station> stations);
 
     List<Station> findNear(Geo geo, Radius radius);
@@ -18,11 +20,15 @@ public interface ForStoringStations {
 
     void updateOperator(StationId id, String operator);
 
-    List<Review> findAllStationReviews(StationId stationId);
+
+    // Station Reviews
+    // ---------------
+    Optional<Review> findReviewById(ReviewId reviewId);
+
+    List<Review> findReviewsForStation(StationId stationId);
 
     void addReview(StationId id, Review review);
 
     void deleteReview(ReviewId reviewId);
 
-    Optional<Review> find(ReviewId reviewId);
 }

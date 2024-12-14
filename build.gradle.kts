@@ -24,9 +24,8 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
-    testLogging.events("STANDARD_OUT", "FAILED" )
+    testLogging.events("FAILED")
     testLogging.showExceptions = true
-    testLogging.showStandardStreams = true
 }
 
 java {
