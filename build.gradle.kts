@@ -1,5 +1,6 @@
 plugins {
     application
+    id("gg.jte.gradle") version("3.1.15")
 }
 
 group = "com.comsystoreply.labs"
@@ -12,6 +13,8 @@ repositories {
 
 dependencies {
     implementation("io.javalin:javalin:6.3.0")
+    implementation("io.javalin:javalin-rendering:6.3.0")
+    implementation("gg.jte:jte:3.1.15")
     implementation("io.badgod:jayreq:0.0.5")
     implementation("commons-codec:commons-codec:1.17.0")
     implementation("org.slf4j:slf4j-simple:2.0.16")
@@ -32,6 +35,10 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+jte {
+    generate()
 }
 
 application {

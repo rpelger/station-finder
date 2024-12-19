@@ -38,7 +38,7 @@ public class StationJsonApiHandler {
                 .map(StationResponse::new)
                 .toList();
 
-        context.json(stationsResponse);
+        context.json(stationsResponse).contentType("application/json; charset=utf-8");
     }
 
     public void stationDetails(Context context) {

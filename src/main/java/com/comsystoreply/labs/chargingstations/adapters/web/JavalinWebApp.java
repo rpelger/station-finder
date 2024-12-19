@@ -5,22 +5,31 @@ import com.comsystoreply.labs.chargingstations.adapters.web.error.*;
 import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
 import com.comsystoreply.labs.chargingstations.app.model.error.*;
 import io.javalin.Javalin;
+import io.javalin.config.JavalinConfig;
 import io.javalin.http.*;
-import io.javalin.http.util.*;
+import io.javalin.http.util.NaiveRateLimit;
+import io.javalin.rendering.template.JavalinJte;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class JavalinWebApp {
 
     private final Javalin webapp;
 
     public JavalinWebApp(StationFinderApp app) {
-        var stationApiHandler = new StationJsonApiHandler(app);
         var authHandler = new UserJsonApiHandler(app);
+        var stationApiHandler = new StationJsonApiHandler(app);
+        var stationViewHandler = new StationHtmlViewHandler(app);
 
-        this.webapp = Javalin.create()
+        Consumer<JavalinConfig> javalinConfig = config -> {
+            config.fileRenderer(new JavalinJte());
+            config.http.defaultContentType = "text/html; charset=utf-8";
+        };
+
+        this.webapp = Javalin.create(javalinConfig)
                 .before("/*", ctx -> NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS))
 
                 .post("/auth/registrations", authHandler::registerNewUser)
@@ -33,6 +42,8 @@ public class JavalinWebApp {
                 .put("/api/stations/{id}", stationApiHandler::updateStationOperator)
                 .post("/api/stations/{id}/reviews", stationApiHandler::addStationReview)
                 .delete("/api/stations/{id}/reviews/{reviewId}", stationApiHandler::deleteStationReview)
+
+                .get("/app/stations", stationViewHandler::listStations)
 
                 .error(404, (ctx) -> ctx.status(404).json(error(404, new InvalidRoute(ctx), ctx)))
                 .error(500, (ctx) -> ctx.status(500).json(error(500, new UnknownError(ctx), ctx)))
