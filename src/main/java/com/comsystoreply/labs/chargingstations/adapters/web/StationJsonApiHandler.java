@@ -9,11 +9,11 @@ import io.javalin.http.HttpStatus;
 import java.util.List;
 import java.util.Optional;
 
-public class StationRequestHandler {
+public class StationJsonApiHandler {
 
     private final StationFinderApp app;
 
-    public StationRequestHandler(StationFinderApp app) {
+    public StationJsonApiHandler(StationFinderApp app) {
         this.app = app;
     }
 

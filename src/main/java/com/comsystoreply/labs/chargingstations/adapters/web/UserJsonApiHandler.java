@@ -5,10 +5,10 @@ import com.comsystoreply.labs.chargingstations.app.model.UserCredentials;
 import com.comsystoreply.labs.chargingstations.app.model.UserRegistration;
 import io.javalin.http.Context;
 
-public class UserRequestHandler {
+public class UserJsonApiHandler {
     private final StationFinderApp app;
 
-    public UserRequestHandler(StationFinderApp app) {
+    public UserJsonApiHandler(StationFinderApp app) {
         this.app = app;
     }
 
