@@ -2,12 +2,12 @@ package com.comsystoreply.labs.chargingstations.adapters.bna;
 
 import com.comsystoreply.labs.chargingstations.app.model.Station;
 import com.comsystoreply.labs.chargingstations.app.model.error.ImportingStationsFailed;
-import com.comsystoreply.labs.chargingstations.app.ports.driven.ForFetchingStations;
+import com.comsystoreply.labs.chargingstations.app.ports.driven.ForObtainingStations;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class BnaCsvStationsFileReader implements ForFetchingStations {
+public class BnaCsvStationsFileReader implements ForObtainingStations {
 
     private final BnaCsvStationParser parser = new BnaCsvStationParser();
 
