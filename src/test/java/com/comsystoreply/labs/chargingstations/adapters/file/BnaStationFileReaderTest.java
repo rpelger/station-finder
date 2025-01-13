@@ -1,4 +1,4 @@
-package com.comsystoreply.labs.chargingstations.adapters.bna;
+package com.comsystoreply.labs.chargingstations.adapters.file;
 
 import com.comsystoreply.labs.chargingstations.app.model.error.ImportingStationsFailed;
 import org.junit.jupiter.api.Test;

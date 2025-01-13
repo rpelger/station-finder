@@ -1,6 +1,6 @@
 package com.comsystoreply.labs.chargingstations;
 
-import com.comsystoreply.labs.chargingstations.adapters.bna.BnaCsvStationsFileReader;
+import com.comsystoreply.labs.chargingstations.adapters.file.BnaCsvStationsFileReader;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationRepository;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
 import com.comsystoreply.labs.chargingstations.adapters.job.ImportStationsJob;
@@ -14,6 +14,7 @@ public class Main {
         var env = Env.from(System.getenv("JAVA_ENV"));
         // Configurator
         var app = new StationFinderApp(
+                // Driven Adapters
                 new BnaCsvStationsFileReader("/Ladesaeulenregister_BNetzA_2024-09-01_v2.csv"),
                 new InMemoryStationRepository(),
                 new InMemoryUserRepository()
