@@ -1,33 +1,44 @@
 package com.comsystoreply.labs.chargingstations.adapters.web;
 
+import com.comsystoreply.labs.chargingstations.*;
 import com.comsystoreply.labs.chargingstations.adapters.web.error.UnknownError;
 import com.comsystoreply.labs.chargingstations.adapters.web.error.*;
-import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
+import com.comsystoreply.labs.chargingstations.app.*;
 import com.comsystoreply.labs.chargingstations.app.model.error.*;
-import io.javalin.Javalin;
-import io.javalin.config.JavalinConfig;
+import gg.jte.ContentType;
+import gg.jte.*;
+import gg.jte.resolve.*;
+import io.javalin.*;
+import io.javalin.config.*;
 import io.javalin.http.*;
-import io.javalin.http.util.NaiveRateLimit;
-import io.javalin.rendering.template.JavalinJte;
+import io.javalin.http.staticfiles.*;
+import io.javalin.http.util.*;
+import io.javalin.rendering.template.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
+import java.nio.file.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.concurrent.*;
+import java.util.function.*;
 
 public class JavalinWebApp {
 
     private final Javalin webapp;
 
     public JavalinWebApp(StationFinderApp app) {
+        this(app, Env.DEV);
+    }
+
+    public JavalinWebApp(StationFinderApp app, Env env) {
+        Consumer<JavalinConfig> javalinConfig = config -> {
+            config.fileRenderer(new JavalinJte(createTemplateEngine(env)));
+            config.http.defaultContentType = "text/html; charset=utf-8";
+            config.staticFiles.add("src/main/assets/", Location.EXTERNAL);
+        };
+
         var authHandler = new UserJsonApiHandler(app);
         var stationApiHandler = new StationJsonApiHandler(app);
         var stationViewHandler = new StationHtmlViewHandler(app);
-
-        Consumer<JavalinConfig> javalinConfig = config -> {
-            config.fileRenderer(new JavalinJte());
-            config.http.defaultContentType = "text/html; charset=utf-8";
-        };
 
         this.webapp = Javalin.create(javalinConfig)
                 .before("/*", ctx -> NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS))
@@ -43,7 +54,9 @@ public class JavalinWebApp {
                 .post("/api/stations/{id}/reviews", stationApiHandler::addStationReview)
                 .delete("/api/stations/{id}/reviews/{reviewId}", stationApiHandler::deleteStationReview)
 
+                .get("/", context -> context.redirect("/app/stations"))
                 .get("/app/stations", stationViewHandler::listStations)
+
 
                 .error(404, (ctx) -> ctx.status(404).json(error(404, new InvalidRoute(ctx), ctx)))
                 .error(500, (ctx) -> ctx.status(500).json(error(500, new UnknownError(ctx), ctx)))
@@ -54,6 +67,24 @@ public class JavalinWebApp {
                 .exception(InvalidStationId.class, (ex, ctx) -> ctx.status(400).json(error(400, ex, ctx)))
                 .exception(InvalidRequestParam.class, (ex, ctx) -> ctx.status(400).json(error(400, ex, ctx)))
         ;
+    }
+
+    private static TemplateEngine createTemplateEngine(Env env) {
+        Path sourceDir = Path.of("src/main/jte");
+        Path targetDir = Path.of("build/jte-classes");
+
+        // use pre-compiled templates on prod for efficiency
+        if (env == Env.PROD) {
+            return TemplateEngine.createPrecompiled(
+                    targetDir,
+                    ContentType.Html);
+            // but use on-demand compiled templates on dev for hot-reloading
+        } else {
+            return TemplateEngine.create(
+                    new DirectoryCodeResolver(sourceDir),
+                    targetDir,
+                    ContentType.Html);
+        }
     }
 
     private static ErrorResponse error(int status, Exception exception, Context context) {

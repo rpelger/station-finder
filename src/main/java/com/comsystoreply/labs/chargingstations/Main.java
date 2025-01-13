@@ -11,12 +11,14 @@ import com.comsystoreply.labs.chargingstations.app.model.User;
 public class Main {
 
     public static void main(String[] args) {
+        var env = Env.from(System.getenv("JAVA_ENV"));
         // Configurator
         var app = new StationFinderApp(
                 new BnaCsvStationsFileReader("/Ladesaeulenregister_BNetzA_2024-09-01_v2.csv"),
                 new InMemoryStationRepository(),
                 new InMemoryUserRepository()
         );
+
 
         // Driving Adapters
         var importStationsJob = new ImportStationsJob(app, User.SYSTEM_USER);

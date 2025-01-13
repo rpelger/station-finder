@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.javalin:javalin:6.3.0")
+    implementation("io.javalin:javalin:6.4.0")
     implementation("io.javalin:javalin-rendering:6.3.0")
     implementation("gg.jte:jte:3.1.15")
     implementation("io.badgod:jayreq:0.0.5")
@@ -38,10 +38,13 @@ java {
 }
 
 jte {
-    generate()
+    precompile()
 }
 
 application {
     mainClass = "com.comsystoreply.labs.chargingstations.Main"
 }
 
+tasks.precompileJte {
+    targetDirectory = project.layout.buildDirectory.dir("jte-classes").get().asFile.toPath()
+}

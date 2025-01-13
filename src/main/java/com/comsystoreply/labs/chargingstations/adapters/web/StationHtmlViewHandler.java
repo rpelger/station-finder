@@ -25,7 +25,7 @@ public class StationHtmlViewHandler {
 
     private void renderListAllStations(Context context, User user) {
         var stations = app.listAll(user).stream().limit(10).toList();
-        context.render("list-stations.jte", Map.of("stations", stations));
+        context.render("pages/list-stations.jte", Map.of("stations", stations));
     }
 
     private void renderFindStations(Context context, User user) {
