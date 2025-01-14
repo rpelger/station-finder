@@ -4,6 +4,7 @@ import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationReposi
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import com.comsystoreply.labs.chargingstations.app.model.error.Unauthorized;
+import com.comsystoreply.labs.chargingstations.app.model.util.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,7 +35,7 @@ class ApplicationPermissionsTest {
         var addStationReview = named("AddStationReview", (Consumer<User>) (user) -> app.addStationReview(user, STATION_ID, "review1"));
         var importStations = named("ImportStations", (Consumer<User>) (user) -> app.importCurrentStations(user));
         var updateStationOperator = named("UpdateStationOperator", (Consumer<User>) (user) -> app.updateStationOperator(user, STATION_ID, "op-neu"));
-        var listAllStations = named("ListAllStations", (Consumer<User>) (user) -> app.listAll(user));
+        var listAllStations = named("ListAllStations", (Consumer<User>) (user) -> app.getStationsPage(user, new StationPageRequest()));
 
         Named<User> aGuest = named("'GUEST'", User.GUEST_USER);
         Named<User> aConsumer = named("'CONSUMER'", User.CONSUMER_USER);

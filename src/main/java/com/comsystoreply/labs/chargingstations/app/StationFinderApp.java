@@ -1,6 +1,7 @@
 package com.comsystoreply.labs.chargingstations.app;
 
 import com.comsystoreply.labs.chargingstations.app.model.*;
+import com.comsystoreply.labs.chargingstations.app.model.util.*;
 import com.comsystoreply.labs.chargingstations.app.ports.driven.*;
 import com.comsystoreply.labs.chargingstations.app.ports.driving.*;
 import com.comsystoreply.labs.chargingstations.app.usecases.*;
@@ -11,7 +12,7 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
 
     private final RegisterUser registerUser;
     private final AuthenticateUser authenticateUser;
-    private final ListAllStations listAllStations;
+    private final ListAllStationsPaged listAllStationsPaged;
     private final FindNearestStations findNearestStations;
     private final ViewStationDetails viewStationDetails;
     private final ImportStations importChargingStations;
@@ -28,7 +29,7 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
         registerUser = new RegisterUser(userRepo);
         authenticateUser = new AuthenticateUser(userRepo);
         findNearestStations = new FindNearestStations(stationRepo);
-        listAllStations = new ListAllStations(stationRepo);
+        listAllStationsPaged = new ListAllStationsPaged(stationRepo);
         viewStationDetails = new ViewStationDetails(stationRepo);
         importChargingStations = new ImportStations(stationLoader, stationRepo);
         updateStationOperator = new UpdateStationOperator(stationRepo);
@@ -58,8 +59,8 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
     }
 
     @Override
-    public List<Station> listAll(User user) {
-        return listAllStations.apply(user);
+    public Paged<Station> getStationsPage(User user, PageRequest<Station> pageRequest) {
+        return listAllStationsPaged.apply(user, pageRequest);
     }
 
     @Override

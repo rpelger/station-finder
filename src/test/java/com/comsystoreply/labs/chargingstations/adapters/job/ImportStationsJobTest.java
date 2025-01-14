@@ -4,7 +4,7 @@ import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationReposi
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
 import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
 import com.comsystoreply.labs.chargingstations.app.model.*;
-import com.comsystoreply.labs.chargingstations.app.ports.driving.ForMaintainingStations;
+import com.comsystoreply.labs.chargingstations.app.model.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,11 +37,11 @@ class ImportStationsJobTest {
     @Test
     void should_run_scheduled_job_immediately() throws InterruptedException {
         var job = new ImportStationsJob(app, User.SYSTEM_USER);
-        assertThat(app.listAll(User.ADMIN_USER), hasSize(0));
+        assertThat(app.getStationsPage(User.ADMIN_USER, new StationPageRequest()).items(), hasSize(0));
 
         job.runOnceImmediately();
         Thread.sleep(100L); // requires sleeping, as job runs asynchronously
 
-        assertThat(app.listAll(User.ADMIN_USER), hasSize(1));
+        assertThat(app.getStationsPage(User.ADMIN_USER, new StationPageRequest()).items(), hasSize(1));
     }
 }

@@ -1,24 +1,22 @@
 package com.comsystoreply.labs.chargingstations.app;
 
-import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationRepository;
-import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
+import com.comsystoreply.labs.chargingstations.adapters.db.*;
 import com.comsystoreply.labs.chargingstations.app.model.*;
-import com.comsystoreply.labs.chargingstations.app.ports.driving.ForMaintainingStations;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.comsystoreply.labs.chargingstations.app.model.util.*;
+import com.comsystoreply.labs.chargingstations.app.ports.driving.*;
+import org.junit.jupiter.api.*;
 
-import java.math.BigDecimal;
-import java.util.List;
+import java.math.*;
+import java.util.*;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 public class ForMaintainingStationsTest {
-    private ForMaintainingStations app;
-
     private static final Location LOCATION = new Location(
             new Geo(1.0d, 2.0d),
             new Address("a-street", "1", "12345", "X-Town", "NRW", "DE"));
+    private ForMaintainingStations app;
 
     @BeforeEach
     void setup() {
@@ -37,27 +35,29 @@ public class ForMaintainingStationsTest {
 
     @Test
     void should_have_no_stations_initially() {
-        var stations = app.listAll(User.ADMIN_USER);
-        assertThat(stations, hasSize(0));
+        var stations = app.getStationsPage(User.ADMIN_USER, new StationPageRequest());
+        assertThat(stations.items(), hasSize(0));
+        assertThat(stations.itemsTotal(), is(0));
     }
 
     @Test
     void should_import_stations() {
         app.importCurrentStations(User.ADMIN_USER);
-        var stations = app.listAll(User.ADMIN_USER);
+        var stations = app.getStationsPage(User.ADMIN_USER, new StationPageRequest());
 
-        assertThat(stations, hasSize(greaterThan(0)));
+        assertThat(stations.items(), hasSize(1));
+        assertThat(stations.itemsTotal(), is(1));
     }
 
     @Test
     void should_update_operator() {
         app.importCurrentStations(User.ADMIN_USER);
-        var station = app.listAll(User.ADMIN_USER).getFirst();
+        var station = app.getStationsPage(User.ADMIN_USER, new StationPageRequest()).items().getFirst();
 
         assertThat(station.operator(), is("operator1"));
         app.updateStationOperator(User.ADMIN_USER, station.id(), "operator2");
 
-        station = app.listAll(User.ADMIN_USER).getFirst();
+        station = app.getStationsPage(User.ADMIN_USER, new StationPageRequest()).items().getFirst();
         assertThat(station.operator(), is("operator2"));
     }
 

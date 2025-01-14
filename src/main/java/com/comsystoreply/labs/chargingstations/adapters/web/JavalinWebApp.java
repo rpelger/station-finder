@@ -46,7 +46,7 @@ public class JavalinWebApp {
                 .post("/auth/registrations", authHandler::registerNewUser)
                 .post("/auth/authentications", authHandler::authenticateUser)
 
-                .get("/api/stations", stationApiHandler::listStations)
+                .get("/api/stations", stationApiHandler::listStationsPaged)
                 .get("/api/stations/near/{lat}/{long}", stationApiHandler::findNearestStations)
                 .get("/api/stations/{id}", stationApiHandler::stationDetails)
                 .get("/api/stations/{id}/reviews", stationApiHandler::stationReviews)

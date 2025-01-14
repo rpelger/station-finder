@@ -1,11 +1,10 @@
 package com.comsystoreply.labs.chargingstations.app.ports.driving;
 
 import com.comsystoreply.labs.chargingstations.app.model.*;
-
-import java.util.List;
+import com.comsystoreply.labs.chargingstations.app.model.util.*;
 
 public interface ForMaintainingStations {
-    List<Station> listAll(User user);
+    Paged<Station> getStationsPage(User user, PageRequest<Station> pageRequest);
 
     void importCurrentStations(User user);
 

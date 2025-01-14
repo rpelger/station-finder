@@ -1,6 +1,7 @@
 package com.comsystoreply.labs.chargingstations.app.ports.driven;
 
 import com.comsystoreply.labs.chargingstations.app.model.*;
+import com.comsystoreply.labs.chargingstations.app.model.util.*;
 
 import java.util.*;
 
@@ -14,9 +15,11 @@ public interface ForStoringStations {
 
     Station get(StationId stationId);
 
-    List<Station> getAll();
+    List<Station> getStations(PageRequest<Station> pageRequest);
 
     boolean exists(StationId stationId);
+
+    int count();
 
     void updateOperator(StationId id, String operator);
 

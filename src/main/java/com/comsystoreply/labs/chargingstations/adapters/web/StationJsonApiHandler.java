@@ -3,6 +3,7 @@ package com.comsystoreply.labs.chargingstations.adapters.web;
 import com.comsystoreply.labs.chargingstations.adapters.web.error.InvalidRequestParam;
 import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
 import com.comsystoreply.labs.chargingstations.app.model.*;
+import com.comsystoreply.labs.chargingstations.app.model.util.*;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
@@ -84,9 +85,9 @@ public class StationJsonApiHandler {
 
     }
 
-    public void listStations(Context context) {
+    public void listStationsPaged(Context context) {
         var user = getUser(context);
-        var stations = app.listAll(user);
+        var stations = app.getStationsPage(user, new StationPageRequest());
 
         context.json(stations);
     }

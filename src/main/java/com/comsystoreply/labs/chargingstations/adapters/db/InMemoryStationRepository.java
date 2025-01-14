@@ -1,13 +1,14 @@
 package com.comsystoreply.labs.chargingstations.adapters.db;
 
 import com.comsystoreply.labs.chargingstations.app.model.*;
-import com.comsystoreply.labs.chargingstations.app.model.error.InvalidStationId;
-import com.comsystoreply.labs.chargingstations.app.ports.driven.ForStoringStations;
+import com.comsystoreply.labs.chargingstations.app.model.error.*;
+import com.comsystoreply.labs.chargingstations.app.model.util.*;
+import com.comsystoreply.labs.chargingstations.app.ports.driven.*;
 
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.*;
 
-import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.*;
 
 public class InMemoryStationRepository implements ForStoringStations {
 
@@ -37,15 +38,23 @@ public class InMemoryStationRepository implements ForStoringStations {
     }
 
     @Override
-    public List<Station> getAll() {
-        return stationsMap.values().stream()
-                .sorted(Comparator.comparing(s -> s.location().address().zipCode()))
+    public List<Station> getStations(PageRequest<Station> pageRequest) {
+        List<Station> list = stationsMap.values().stream()
+                .sorted(pageRequest.comparator())
+                .skip(pageRequest.offset())
+                .limit(pageRequest.limit())
                 .toList();
+        return list;
     }
 
     @Override
     public boolean exists(StationId stationId) {
         return Optional.ofNullable(stationsMap.get(stationId)).isPresent();
+    }
+
+    @Override
+    public int count() {
+        return stationsMap.size();
     }
 
     @Override

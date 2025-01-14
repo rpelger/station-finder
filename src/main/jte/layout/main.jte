@@ -1,12 +1,15 @@
 @import gg.jte.Content
+@param String pageTitle
+@param String pageDescription
 @param Content content
 
 <html class="h-full">
 <head>
     <link rel="stylesheet" href="/css/app.css"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
-<body class="h-full">
+<body class="h-full" id="body_id">
 <div class="min-h-full">
     <nav class="border-b border-gray-200 bg-white">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -148,8 +151,8 @@
     <div class="py-10">
         <header>
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <h1 class="text-3xl font-bold tracking-tight text-gray-900">Charging Stations</h1>
-                <p class="mt-2 text-sm text-gray-700">A list of all the charging stations.</p>
+                <h1 class="text-3xl font-bold tracking-tight text-gray-900">${pageTitle}</h1>
+                <p class="mt-2 text-sm text-gray-700">${pageDescription}</p>
             </div>
         </header>
         <main>
