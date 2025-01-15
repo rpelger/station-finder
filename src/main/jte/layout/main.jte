@@ -2,12 +2,15 @@
 @param String pageTitle
 @param String pageDescription
 @param Content content
+@param Content head
 
 <html class="h-full">
 <head>
     <link rel="stylesheet" href="/css/app.css"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+
+    ${head}
 </head>
 <body class="h-full" id="body_id">
 <div class="min-h-full">
@@ -148,7 +151,7 @@
         </div>
     </nav>
 
-    <div class="py-10">
+    <div class="py-4">
         <header>
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-900">${pageTitle}</h1>
