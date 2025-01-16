@@ -27,8 +27,8 @@ public class StationHtmlViewHandler {
                 : app.findNearestStations(user, geo, radius);
 
         var template = isPartialsRequest(context)
-                ? "partials/stationsTable.jte"
-                : "pages/list-stations.jte";
+                ? "partials/stations_paginated_list.jte"
+                : "pages/stations.jte";
 
         context.render(template, Map.of("stationsPage", stationsPage));
     }
