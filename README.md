@@ -60,6 +60,8 @@ The following list shows the _Driving Ports_ and the use-cases each port exposes
 
 _*) This port may be merged with `ForFindingStations` in the future, as both expose CONSUMER use-cases._ 
 
+In my example here, all the _Driving Ports_ are implemented, i.e. exposed in an central application, the `ChargingStationApp`. All Driving adapters (see below) or tests can now call into the ports, via a configured application. Configuration is done either in `Main` (for productive use) or in each Test-Case.
+
 #### Driven 
 (see [package](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2Fapp%2Fports%2Fdriven))
 
@@ -70,11 +72,21 @@ The following list shows the _Driven Ports_ which are required by the use-cases 
 * [ForStoringUsers](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2Fapp%2Fports%2Fdriven%2FForStoringUsers.java)
 
 ### Adapters
-(see [package](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2Fadapters))
+(see [package](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2Fadapters)). 
 
-As Ports are just interfaces, defining the entry points (Driving Port) to the application and the interaction points with external systems (Driven Port), the application requires concrete _Adapters_
-that implement the Ports and make them usable in a concrete way. 
+As Ports are just interfaces, defining the entry points (Driving Port) to the application and the interaction points with external systems (Driven Port), the application requires concrete _Adapters_that implement the Ports and make them usable in a concrete way. 
 
-The Driving Ports are implemented mainly via a web-adapter (see: [web](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2Fadapters%2Fweb)), but also via _Tests_. 
+_Please note that this package is currently not divided into driving and driven adapters._
 
+#### Driving Adapters and Driving Actors
+The Driving Adapters are basically a web-adapter (see: [web](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2Fadapters%2Fweb)) with a central web-application `JavalinWebApp` and its respective web-request handlers (e.g. `StationJsonApiHandler`). The web-adapters adapt from a web-request (HTTP) to the domain (Application-Ports). A user can use this Driving-Adapter to to stuff with the application by issueing HTTP requests (e.g. via Browser, curl, etc.). A user issueing HTTP requests is a Driving Actor of the application. Other Driving Actors are: Scheduled Jobs and Tests, but these don't (yet) need an adapter, but call into the Application-Ports directly
+
+So we have the following Driving Actors in our system
+* users issueing HTTP requests (via web-adapters)
+* scheduled jobs, that call into the application-ports directly
+* test cases that call into the application ports directly.
+
+#### Driven Adapters and Driven Actors
 The Driven Adapters are implemented based on the external systems they interact with. Currently these are (InMemory-)DB-access (see: [db](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2Fadapters%2Fdb)) and a REST-client (see: [restclient](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2Fadapters%2Frestclient))
+
+The Driven Actors are the targeted external systems, e.g. a Database, File etc.
