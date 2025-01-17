@@ -58,6 +58,7 @@ public class JavalinWebApp {
 
                 .get("/", context -> context.redirect("/app/stations"))
                 .get("/app/stations", stationViewHandler::listStations)
+                
 
 
                 .error(404, (ctx) -> ctx.status(404).json(error(404, new InvalidRoute(ctx), ctx)))

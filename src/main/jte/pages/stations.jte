@@ -30,7 +30,7 @@ head = @`
                 station.location.geo.lon + " / " + station.location.geo.lat
             console.log(station.chargers)
             document.getElementById("selected-station_chargers").innerHTML =
-                station.chargers.map(charger => "<li>" + charger.type + " (" + charger.power + "kW)</li>").join("")
+                station.chargers.map(charger => "<li class='pl-2'>" + charger.count + "x " + charger.name +"</lii>").join("")
 
 
             document.querySelectorAll("li").forEach(el => el.classList.remove("bg-gray-200"))
@@ -106,7 +106,7 @@ content = @`
                     <br>
                     <span id="selected-station_geo" class="text-gray-400">
                     </span>
-                    <ul id="selected-station_chargers">
+                    <ul id="selected-station_chargers" class="list-disc list-inside">
 
                     </ul>
                 </div>
