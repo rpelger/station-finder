@@ -3,6 +3,7 @@ package com.comsystoreply.labs.chargingstations.app;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationRepository;
 import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
 import com.comsystoreply.labs.chargingstations.app.model.*;
+import com.comsystoreply.labs.chargingstations.app.model.util.*;
 import com.comsystoreply.labs.chargingstations.app.ports.driving.ForFindingStations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,16 +46,22 @@ public class ForFindingStationsTest {
         var user = User.CONSUMER_USER;
         var radius = new Radius(10.0d);
         var geo = new Geo(20.0d, 40.0d);
+        var area = new Area(geo, radius);
+        var pageRequest = new StationPageRequest(1, Integer.MAX_VALUE);
 
-        var stations = port.findNearestStations(user, geo, radius);
+        var stations = port.findStationsInAreaPaged(user, area, pageRequest);
 
-        assertThat(stations, hasSize(greaterThan(0)));
+        assertThat(stations.items(), hasSize(greaterThan(0)));
     }
 
     @Test
     void should_view_station_details() {
-        var station = port.findNearestStations(User.CONSUMER_USER, new Geo(20.0d, 40.0d), new Radius(10.0d)).getFirst();
-        var stationDetails = port.viewStationDetails(User.CONSUMER_USER, station.id());
+        var user = User.CONSUMER_USER;
+        var area = new Area(new Geo(20.0d, 40.0d), new Radius(10.0d));
+        var pageRequest = new StationPageRequest(1, Integer.MAX_VALUE);
+
+        var station = port.findStationsInAreaPaged(user, area, pageRequest).items().getFirst();
+        var stationDetails = port.viewStationDetails(user, station.id());
 
         assertThat(station, is(equalTo(stationDetails)));
     }

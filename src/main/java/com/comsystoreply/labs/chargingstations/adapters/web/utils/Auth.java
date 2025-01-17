@@ -1,4 +1,4 @@
-package com.comsystoreply.labs.chargingstations.adapters.web;
+package com.comsystoreply.labs.chargingstations.adapters.web.utils;
 
 import com.comsystoreply.labs.chargingstations.app.model.User;
 import io.javalin.http.Context;

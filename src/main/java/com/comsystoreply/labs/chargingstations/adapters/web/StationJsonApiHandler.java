@@ -1,14 +1,11 @@
 package com.comsystoreply.labs.chargingstations.adapters.web;
 
-import com.comsystoreply.labs.chargingstations.adapters.web.error.InvalidRequestParam;
-import com.comsystoreply.labs.chargingstations.app.StationFinderApp;
+import com.comsystoreply.labs.chargingstations.adapters.web.error.*;
+import com.comsystoreply.labs.chargingstations.adapters.web.utils.*;
+import com.comsystoreply.labs.chargingstations.app.*;
 import com.comsystoreply.labs.chargingstations.app.model.*;
 import com.comsystoreply.labs.chargingstations.app.model.util.*;
-import io.javalin.http.Context;
-import io.javalin.http.HttpStatus;
-
-import java.util.List;
-import java.util.Optional;
+import io.javalin.http.*;
 
 public class StationJsonApiHandler {
 
@@ -18,33 +15,26 @@ public class StationJsonApiHandler {
         this.app = app;
     }
 
-    private static User getUser(Context context) {
-        return Optional
-                .ofNullable(context.<User>sessionAttribute("current_user"))
-                .orElse(User.GUEST_USER);
-    }
-
     public void findNearestStations(Context context) {
         Double lat = context.pathParamAsClass("lat", Double.class).getOrThrow(InvalidRequestParam::new);
         Double lon = context.pathParamAsClass("long", Double.class).getOrThrow(InvalidRequestParam::new);
         Double rad = context.queryParamAsClass("radius", Double.class).getOrDefault(10.0d);
 
-        var user = getUser(context);
+        var user = Auth.getUser(context);
         var geo = new Geo(lat, lon);
         var radius = new Radius(rad);
+        var area = new Area(geo, radius);
 
         var stationsResponse = app
-                .findNearestStations(user, geo, radius)
-                .stream()
-                .map(StationResponse::new)
-                .toList();
+                .findStationsInAreaPaged(user, area, new StationPageRequest(1, Integer.MAX_VALUE))
+                .mapItems(StationResponse::new);
 
         context.json(stationsResponse).contentType("application/json; charset=utf-8");
     }
 
     public void stationDetails(Context context) {
         var id = context.pathParamAsClass("id", String.class).getOrThrow(err -> new RuntimeException());
-        var user = getUser(context);
+        var user = Auth.getUser(context);
 
         var chargingStation = app.viewStationDetails(user, new StationId(id));
 
@@ -54,7 +44,7 @@ public class StationJsonApiHandler {
     public void updateStationOperator(Context context) {
         var id = context.pathParamAsClass("id", String.class).getOrThrow(err -> new RuntimeException());
         var updateStationRequest = context.bodyValidator(UpdateStationRequest.class).getOrThrow(err -> new RuntimeException());
-        var user = getUser(context);
+        var user = Auth.getUser(context);
 
         app.updateStationOperator(user, new StationId(id), updateStationRequest.operator);
 
@@ -63,7 +53,7 @@ public class StationJsonApiHandler {
 
     public void stationReviews(Context context) {
         var id = context.pathParamAsClass("id", String.class).getOrThrow(err -> new RuntimeException());
-        var user = getUser(context);
+        var user = Auth.getUser(context);
 
         var reviews = app.listStationReviews(user, new StationId(id));
 
@@ -73,7 +63,7 @@ public class StationJsonApiHandler {
     public void addStationReview(Context context) {
         var id = context.pathParamAsClass("id", String.class).getOrThrow(err -> new RuntimeException());
         var addStationReviewRequest = context.bodyValidator(AddStationReviewRequest.class).getOrThrow(err -> new RuntimeException());
-        var user = getUser(context);
+        var user = Auth.getUser(context);
 
         var review = app.addStationReview(
                 user,
@@ -86,28 +76,17 @@ public class StationJsonApiHandler {
     }
 
     public void listStationsPaged(Context context) {
-        var user = getUser(context);
-        var stations = app.getStationsPage(user, new StationPageRequest());
+        var user = Auth.getUser(context);
+        var stations = app.getStationsPaged(user, new StationPageRequest());
 
         context.json(stations);
     }
 
     public void deleteStationReview(Context context) {
-        var user = getUser(context);
+        var user = Auth.getUser(context);
         // var stationId = context.pathParamAsClass("id", String.class).getOrThrow(err -> new RuntimeException());
         var reviewId = context.pathParamAsClass("reviewId", String.class).getOrThrow(err -> new RuntimeException());
         app.deleteStationReview(user, new ReviewId(reviewId));
-    }
-
-    record StationResponse(
-            String id,
-            String operator,
-            String startOfServiceDate,
-            Location location,
-            List<Charger> chargers) {
-        StationResponse(Station station) {
-            this(station.id().value(), station.operator(), station.startOfService(), station.location(), station.chargers());
-        }
     }
 
     private record UpdateStationRequest(String operator) {

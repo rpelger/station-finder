@@ -5,6 +5,7 @@ import com.comsystoreply.labs.chargingstations.adapters.web.error.UnknownError;
 import com.comsystoreply.labs.chargingstations.adapters.web.error.*;
 import com.comsystoreply.labs.chargingstations.app.*;
 import com.comsystoreply.labs.chargingstations.app.model.error.*;
+import com.fasterxml.jackson.databind.*;
 import gg.jte.ContentType;
 import gg.jte.*;
 import gg.jte.resolve.*;
@@ -35,6 +36,7 @@ public class JavalinWebApp {
             config.http.defaultContentType = "text/html; charset=utf-8";
             config.staticFiles.add("src/main/assets/", Location.EXTERNAL);
         };
+
 
         var authHandler = new UserJsonApiHandler(app);
         var stationApiHandler = new StationJsonApiHandler(app);

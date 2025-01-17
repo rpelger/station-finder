@@ -1,6 +1,7 @@
 package com.comsystoreply.labs.chargingstations.app.model.util;
 
 import java.util.*;
+import java.util.function.*;
 
 public class Paged<T> {
     private final List<T> items;
@@ -42,5 +43,14 @@ public class Paged<T> {
 
     public int currentPageEnd() {
         return currentPage * maxItemsOnPage;
+    }
+
+    public <R> Paged<R> mapItems(Function<T, R> mapper) {
+        return new Paged<R>(
+                this.items.stream().map(mapper).toList(),
+                this.maxItemsOnPage,
+                this.itemsTotal,
+                this.currentPage
+        );
     }
 }

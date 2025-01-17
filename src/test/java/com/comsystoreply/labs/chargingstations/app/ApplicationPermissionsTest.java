@@ -1,25 +1,22 @@
 package com.comsystoreply.labs.chargingstations.app;
 
-import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryStationRepository;
-import com.comsystoreply.labs.chargingstations.adapters.db.InMemoryUserRepository;
+import com.comsystoreply.labs.chargingstations.adapters.db.*;
 import com.comsystoreply.labs.chargingstations.app.model.*;
-import com.comsystoreply.labs.chargingstations.app.model.error.Unauthorized;
+import com.comsystoreply.labs.chargingstations.app.model.error.*;
 import com.comsystoreply.labs.chargingstations.app.model.util.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Named;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Named.named;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Named.*;
+import static org.junit.jupiter.params.provider.Arguments.*;
 
 class ApplicationPermissionsTest {
 
@@ -29,13 +26,13 @@ class ApplicationPermissionsTest {
     private static StationFinderApp app;
 
     private static Stream<Arguments> usecases() {
-        var findNearestStations = named("FindNearestStations", (Consumer<User>) (user) -> app.findNearestStations(user, null, null));
+        var findNearestStations = named("FindNearestStations", (Consumer<User>) (user) -> app.findStationsInAreaPaged(user, new Area(new Geo(0d, 0d), new Radius(0d)), new StationPageRequest()));
         var viewStationDetails = named("ViewStationDetails", (Consumer<User>) (user) -> app.viewStationDetails(user, STATION_ID));
         var listStationReviews = named("ListStationReviews", (Consumer<User>) (user) -> app.listStationReviews(user, STATION_ID));
         var addStationReview = named("AddStationReview", (Consumer<User>) (user) -> app.addStationReview(user, STATION_ID, "review1"));
         var importStations = named("ImportStations", (Consumer<User>) (user) -> app.importCurrentStations(user));
         var updateStationOperator = named("UpdateStationOperator", (Consumer<User>) (user) -> app.updateStationOperator(user, STATION_ID, "op-neu"));
-        var listAllStations = named("ListAllStations", (Consumer<User>) (user) -> app.getStationsPage(user, new StationPageRequest()));
+        var listAllStations = named("ListAllStations", (Consumer<User>) (user) -> app.getStationsPaged(user, new StationPageRequest()));
 
         Named<User> aGuest = named("'GUEST'", User.GUEST_USER);
         Named<User> aConsumer = named("'CONSUMER'", User.CONSUMER_USER);
@@ -89,7 +86,12 @@ class ApplicationPermissionsTest {
     static void setup() {
 
         app = new StationFinderApp(
-                () -> List.of(new Station(STATION_ID, "op1", null, "today", List.of())),
+                () -> List.of(new Station(
+                        STATION_ID,
+                        "op1",
+                        new Location(new Geo(0d, 0d), new Address("", "", "", "", "", "")),
+                        "today",
+                        List.of())),
                 new InMemoryStationRepository(),
                 new InMemoryUserRepository()
         );

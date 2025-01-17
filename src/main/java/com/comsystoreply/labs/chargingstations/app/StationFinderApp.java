@@ -6,7 +6,7 @@ import com.comsystoreply.labs.chargingstations.app.ports.driven.*;
 import com.comsystoreply.labs.chargingstations.app.ports.driving.*;
 import com.comsystoreply.labs.chargingstations.app.usecases.*;
 
-import java.util.List;
+import java.util.*;
 
 public class StationFinderApp implements ForAccessingPlatform, ForMaintainingStations, ForFindingStations, ForReviewingStations {
 
@@ -49,8 +49,8 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
     }
 
     @Override
-    public List<Station> findNearestStations(User user, Geo geo, Radius radius) {
-        return findNearestStations.apply(user, geo, radius);
+    public Paged<Station> findStationsInAreaPaged(User user, Area area, PageRequest<Station> pageRequest) {
+        return findNearestStations.apply(user, area, pageRequest);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
     }
 
     @Override
-    public Paged<Station> getStationsPage(User user, PageRequest<Station> pageRequest) {
+    public Paged<Station> getStationsPaged(User user, PageRequest<Station> pageRequest) {
         return listAllStationsPaged.apply(user, pageRequest);
     }
 

@@ -24,11 +24,18 @@ public class InMemoryStationRepository implements ForStoringStations {
     }
 
     @Override
-    public List<Station> findNear(Geo geo, Radius radius) {
+    public List<Station> findInArea(Area area, PageRequest<Station> pageRequest) {
         return stationsMap.values().stream()
-                .sorted(Comparator.comparing(s -> s.id().value()))
-                .limit(10)
+                .filter(station -> area.contains(station.location().geo()))
+                .sorted(pageRequest.comparator())
+                .limit(pageRequest.limit())
+                .skip(pageRequest.offset())
                 .toList();
+    }
+
+    @Override
+    public int countInArea(Area area) {
+        return stationsMap.size();
     }
 
     @Override

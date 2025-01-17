@@ -1,12 +1,12 @@
-@import com.comsystoreply.labs.chargingstations.app.model.Station
-@import com.comsystoreply.labs.chargingstations.app.model.util.*
-@param Paged<Station> stationsPage
-
+@import com.comsystoreply.labs.chargingstations.adapters.web.*
+@import com.comsystoreply.labs.chargingstations.adapters.web.utils.*
+@import com.comsystoreply.labs.chargingstations.app.model.util.Paged
+@param Paged<StationResponse> stationsPage
 
 
 <!-- Pagination Top -->
 <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-    <a href="?page=${Math.max(stationsPage.currentPage() - 1, 1)}"
+    <a href="#"
        hx-get="?page=${Math.max(stationsPage.currentPage() - 1, 1)}"
        hx-target="#stations-table"
        hx-push-url="true"
@@ -22,7 +22,7 @@
     <div class="w-16 p-2 text-center text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300">
         <span>${stationsPage.currentPage()}</span>
     </div>
-    <a href="?page=${Math.min(stationsPage.currentPage() + 1, stationsPage.totalPages())}"
+    <a href="#"
        hx-get="?page=${Math.min(stationsPage.currentPage() + 1, stationsPage.totalPages())}"
        hx-target="#stations-table"
        hx-push-url="true"
@@ -41,11 +41,14 @@
 <div class="mt-2 flow-root">
     <div class="overflow-x-auto py-2 align-middle">
         <ul class="divide-y divide-gray-300">
-            @for(Station station: stationsPage.items())
-                <li id="station-${station.id().value()}" class="py-2 px-0 text-sm text-gray-800 font-medium"
-                    onclick='setSelectedStation("${station.id().value()}", map)'>
-                    <div class="truncate">${station.operator()}</div>
-                    <div class="truncate text-gray-500">
+            @for(StationResponse station: stationsPage.items())
+                <li id="station-${station.id()}"
+                    class="station py-2 px-0 text-sm text-gray-800 font-medium"
+                    onclick='setSelectedStation("${station.id()}")'
+                    data-station='${Json.toJson(station)}'
+                >
+                    <div class="pl-2 truncate">${station.operator()}</div>
+                    <div class="pl-2 truncate text-gray-500">
                         ${station.location().address().street()}
                         ${station.location().address().houseNumber()},
                         ${station.location().address().zipCode()}
@@ -56,38 +59,3 @@
         </ul>
     </div>
 </div>
-
-
-
-
-<script>
-    stations = [
-        @for(Station beStation: stationsPage.items())
-        {
-            id: "${beStation.id().value()}",
-            station: {
-                name: "${beStation.operator()}",
-                address: {
-                    street: "${beStation.location().address().street()}",
-                    houseNr: "${beStation.location().address().houseNumber()}",
-                    zip: "${beStation.location().address().zipCode()}",
-                    city: "${beStation.location().address().city()}"
-                },
-                geo: {
-                    lat: "${beStation.location().geo().lat()}",
-                    lon: "${beStation.location().geo().lon()}"
-                }
-            }
-        },
-        @endfor
-    ]
-
-    selected = stations.at(0)
-    markers = createMarkers(stations.map(s => s.station))
-
-    if (map) {
-        markers.forEach(m => m.addTo(map))
-        setSelectedStation(selected.id, map)
-    }
-
-</script>

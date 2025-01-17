@@ -11,7 +11,9 @@ public interface ForStoringStations {
     // --------
     void saveAll(Collection<Station> stations);
 
-    List<Station> findNear(Geo geo, Radius radius);
+    List<Station> findInArea(Area area, PageRequest<Station> pageRequest);
+
+    int countInArea(Area area);
 
     Station get(StationId stationId);
 

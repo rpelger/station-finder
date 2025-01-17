@@ -35,7 +35,7 @@ public class ForMaintainingStationsTest {
 
     @Test
     void should_have_no_stations_initially() {
-        var stations = app.getStationsPage(User.ADMIN_USER, new StationPageRequest());
+        var stations = app.getStationsPaged(User.ADMIN_USER, new StationPageRequest());
         assertThat(stations.items(), hasSize(0));
         assertThat(stations.itemsTotal(), is(0));
     }
@@ -43,7 +43,7 @@ public class ForMaintainingStationsTest {
     @Test
     void should_import_stations() {
         app.importCurrentStations(User.ADMIN_USER);
-        var stations = app.getStationsPage(User.ADMIN_USER, new StationPageRequest());
+        var stations = app.getStationsPaged(User.ADMIN_USER, new StationPageRequest());
 
         assertThat(stations.items(), hasSize(1));
         assertThat(stations.itemsTotal(), is(1));
@@ -52,12 +52,12 @@ public class ForMaintainingStationsTest {
     @Test
     void should_update_operator() {
         app.importCurrentStations(User.ADMIN_USER);
-        var station = app.getStationsPage(User.ADMIN_USER, new StationPageRequest()).items().getFirst();
+        var station = app.getStationsPaged(User.ADMIN_USER, new StationPageRequest()).items().getFirst();
 
         assertThat(station.operator(), is("operator1"));
         app.updateStationOperator(User.ADMIN_USER, station.id(), "operator2");
 
-        station = app.getStationsPage(User.ADMIN_USER, new StationPageRequest()).items().getFirst();
+        station = app.getStationsPaged(User.ADMIN_USER, new StationPageRequest()).items().getFirst();
         assertThat(station.operator(), is("operator2"));
     }
 
