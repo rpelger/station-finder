@@ -21,8 +21,8 @@ also known as Hexagonal Architecture.
 As an entry point to the application you should just look at [Main.java](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2FMain.java),
 where the application is _configured_ by providing the required _Driven Adapters_
 to the [ChargingStationsApp.java](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2Fapp%2FChargingStationsApp.java) and by starting the web-application (see: [JavalinWebApp.java](src%2Fmain%2Fjava%2Fcom%2Fcomsystoreply%2Flabs%2Fchargingstations%2Fadapters%2Fweb%2FJavalinWebApp.java))
-and thus exposing the _Driven Ports_ via a web interface. The ChargingStationApp implements
-all _Driving Ports_ as a simple _facade_ by delegating functionality to disstinct _UseCases_.
+and thus exposing the _Driving Ports_ via a web interface or a scheduled driving actor. The ChargingStationApp implements
+all _Driving Ports_ as a simple _facade_ by delegating functionality to distinct _UseCases_.
 
 ### Users / Roles
 
@@ -33,7 +33,7 @@ The application defines 3 different User roles:
 * SYSTEM_USER (for running automated jobs)
 * ADMIN_USER (for maintaining application data, i.e. stations and users)
 * CONSUMER_USER (for using the application, i.e. this is the end-user)
-* _anonymous_ i.e. un-authenticated access is possible for registration and authentication
+* GUEST_USER i.e. un-authenticated access is possible for registration and authentication
 
 ### Ports
 
