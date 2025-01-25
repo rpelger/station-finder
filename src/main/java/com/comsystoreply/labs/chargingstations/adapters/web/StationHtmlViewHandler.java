@@ -29,7 +29,7 @@ public class StationHtmlViewHandler {
         var pageRequest = new StationPageRequest(currentPage);
 
         var stationsPage = user.isAdmin()
-                ? app.getStationsPaged(user, pageRequest)
+                ? app.listAllStationsPaged(user, pageRequest)
                 : app.findStationsInAreaPaged(user, area, pageRequest);
 
         var template = isPartialsRequest(context)
@@ -39,8 +39,22 @@ public class StationHtmlViewHandler {
         context.render(template, Map.of("stationsPage", stationsPage.mapItems(StationResponse::new)));
     }
 
+    public void viewStation(Context context) {
+        var user = User.ADMIN_USER;
+        var id = new StationId(context.pathParam("id"));
+        var station = app.viewStationAsAdmin(user, id);
+
+        if (!isPartialsRequest(context)) {
+            context.status(404);
+        } else {
+            context.render("partials/selected_station.jte", Map.of("station", new StationResponse(station)));
+        }
+
+    }
+
     private boolean isPartialsRequest(Context context) {
         return context.header("HX-Target") != null;
     }
+
 
 }

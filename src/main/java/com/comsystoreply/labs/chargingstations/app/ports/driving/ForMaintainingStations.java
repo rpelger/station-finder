@@ -4,7 +4,9 @@ import com.comsystoreply.labs.chargingstations.app.model.*;
 import com.comsystoreply.labs.chargingstations.app.model.util.*;
 
 public interface ForMaintainingStations {
-    Paged<Station> getStationsPaged(User user, PageRequest<Station> pageRequest);
+    Paged<Station> listAllStationsPaged(User user, PageRequest<Station> pageRequest);
+
+    Station viewStationAsAdmin(User user, StationId stationId);
 
     void importCurrentStations(User user);
 

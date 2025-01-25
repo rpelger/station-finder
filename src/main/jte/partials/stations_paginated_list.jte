@@ -1,6 +1,7 @@
 @import com.comsystoreply.labs.chargingstations.adapters.web.*
 @import com.comsystoreply.labs.chargingstations.adapters.web.utils.*
 @import com.comsystoreply.labs.chargingstations.app.model.util.Paged
+@import gg.jte.support.*
 @param Paged<StationResponse> stationsPage
 
 
@@ -41,18 +42,24 @@
 <div class="mt-2 flow-root">
     <div class="overflow-x-auto py-2 align-middle">
         <ul class="divide-y divide-gray-300">
-            @for(StationResponse station: stationsPage.items())
-                <li id="station-${station.id()}"
-                    class="station py-2 px-0 text-sm text-gray-800 font-medium"
-                    onclick='setSelectedStation("${station.id()}")'
-                    data-station='${Json.toJson(station)}'
+            @for(var entry: ForSupport.of(stationsPage.items()))
+                <li id="station-${entry.get().id()}"
+                    class="station py-2 px-0 text-sm text-gray-800 font-medium focus:bg-gray-200"
+                    hx-get="/app/stations/${entry.get().id()}"
+                    hx-trigger="focus"
+                    hx-target="#station-details"
+                    onclick="select(this)"
+                    onfocus="select(this)"
+                    tabindex="${entry.getIndex()+1}"
+                    data-lat="${entry.get().location().geo().lat()}"
+                    data-lon="${entry.get().location().geo().lon()}"
                 >
-                    <div class="pl-2 truncate">${station.operator()}</div>
+                    <div class="pl-2 truncate">${entry.get().operator()}</div>
                     <div class="pl-2 truncate text-gray-500">
-                        ${station.location().address().street()}
-                        ${station.location().address().houseNumber()},
-                        ${station.location().address().zipCode()}
-                        ${station.location().address().city()}
+                        ${entry.get().location().address().street()}
+                        ${entry.get().location().address().houseNumber()},
+                        ${entry.get().location().address().zipCode()}
+                        ${entry.get().location().address().city()}
                     </div>
                 </li>
             @endfor

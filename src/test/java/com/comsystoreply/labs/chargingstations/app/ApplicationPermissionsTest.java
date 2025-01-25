@@ -32,7 +32,8 @@ class ApplicationPermissionsTest {
         var addStationReview = named("AddStationReview", (Consumer<User>) (user) -> app.addStationReview(user, STATION_ID, "review1"));
         var importStations = named("ImportStations", (Consumer<User>) (user) -> app.importCurrentStations(user));
         var updateStationOperator = named("UpdateStationOperator", (Consumer<User>) (user) -> app.updateStationOperator(user, STATION_ID, "op-neu"));
-        var listAllStations = named("ListAllStations", (Consumer<User>) (user) -> app.getStationsPaged(user, new StationPageRequest()));
+        var listAllStations = named("ListAllStations", (Consumer<User>) (user) -> app.listAllStationsPaged(user, new StationPageRequest()));
+        var viewStationAsAdmin = named("viewStationAsAdmin", (Consumer<User>) (user) -> app.viewStationAsAdmin(user, STATION_ID));
 
         Named<User> aGuest = named("'GUEST'", User.GUEST_USER);
         Named<User> aConsumer = named("'CONSUMER'", User.CONSUMER_USER);
@@ -69,6 +70,7 @@ class ApplicationPermissionsTest {
                 arguments(anAdmin, isNotAllowedTo, addStationReview),
                 arguments(anAdmin, isAllowedTo, updateStationOperator),
                 arguments(anAdmin, isAllowedTo, listAllStations),
+                arguments(anAdmin, isAllowedTo, viewStationAsAdmin),
                 arguments(anAdmin, isAllowedTo, importStations),
 
                 // SYSTEM

@@ -77,7 +77,7 @@ public class StationJsonApiHandler {
 
     public void listStationsPaged(Context context) {
         var user = Auth.getUser(context);
-        var stations = app.getStationsPaged(user, new StationPageRequest());
+        var stations = app.listAllStationsPaged(user, new StationPageRequest());
 
         context.json(stations);
     }

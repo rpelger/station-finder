@@ -10,79 +10,48 @@ head = @`
     <script>
         let map
         let markers = []
-        let stations = []
 
-        function removeMarkers(markers) {
-            setTimeout(() => {
-                markers.forEach(m => m.remove())
-            }, 1000)
-        }
+        function createMap(lon, lat) {
+            if (map) {
+                return
+            }
 
-        function setSelectedStation(stationId) {
-            let station = findStationById(stationId)
-            document.getElementById("selected-station_name").textContent = station.operator;
-            document.getElementById("selected-station_address").textContent =
-                station.location.address.street + " " +
-                station.location.address.houseNumber + ", " +
-                station.location.address.zipCode + " " +
-                station.location.address.city;
-            document.getElementById("selected-station_geo").textContent =
-                station.location.geo.lon + " / " + station.location.geo.lat
-            console.log(station.chargers)
-            document.getElementById("selected-station_chargers").innerHTML =
-                station.chargers.map(charger => "<li class='pl-2'>" + charger.count + "x " + charger.name +"</lii>").join("")
-
-
-            document.querySelectorAll("li").forEach(el => el.classList.remove("bg-gray-200"))
-            document.getElementById("station-" + station.id).classList.add("bg-gray-200")
-
-            map.flyTo({
-                center: [station.location.geo.lon, station.location.geo.lat],
-                zoom: 16,
-                essential: true
-            });
-        }
-
-        function createMap(geo) {
-            return new maplibregl.Map({
+            map = new maplibregl.Map({
                 container: 'stations-map',
                 style: 'https://tiles.versatiles.org/assets/styles/colorful.json',
-                center: [geo.lon, geo.lat],
+                center: [lon, lat],
                 zoom: 16 // starting zoom
             }).addControl(new maplibregl.NavigationControl());
         }
 
-        function createMarkers(stations) {
+        function createMarkers(positions) {
             let oldMarkers = markers
-            markers = stations
-                .map(s => {
-                    let m = new maplibregl.Marker().setLngLat([
-                        s.location.geo.lon,
-                        s.location.geo.lat
-                    ])
-                    m.id = s.id
-                    return m;
-                });
+            markers = positions.map(pos => new maplibregl.Marker().setLngLat(pos))
             markers.forEach(m => m.addTo(map))
-            removeMarkers(oldMarkers)
+            setTimeout(() => oldMarkers.forEach(m => m.remove()), 1000)
         }
 
-        function findStations() {
-            return Array.from(document.querySelectorAll("li.station")).map(elem => JSON.parse(elem.dataset.station))
+        function centerOnMap(lon, lat) {
+            if (map) {
+                map.flyTo({
+                    center: [lon, lat],
+                    zoom: 16,
+                    essential: true
+                })
+            }
         }
 
-        function findStationById(stationId) {
-            return stations.find(s => s.id === stationId)
+        function select(element) {
+            element.focus()
+            centerOnMap(element.dataset.lon, element.dataset.lat)
         }
 
         function updateUi() {
-            stations = findStations()
-            let selected = stations.at(0)
-            if (!map) {
-                map = createMap(selected.location.geo)
-            }
-            createMarkers(stations)
-            setSelectedStation(selected.id, map)
+            const stationElements = Array.from(document.querySelectorAll("li.station"))
+            const selected = stationElements[0]
+            createMap(selected.dataset.lon, selected.dataset.lat)
+            createMarkers(stationElements.map(elem => [elem.dataset.lon, elem.dataset.lat]))
+            select(selected)
         }
     </script>
 `,
@@ -98,27 +67,18 @@ content = @`
 
         <div class="grow">
             <div id="stations-map" class="w-full h-[480px] border border-gray-400"></div>
-            <div id="selected-station" class="mt-2">
-                <h2 id="selected-station_name" class="font-bold">${selectedStation.operator()}</h2>
-                <div>
-                    <span id="selected-station_address">
-                    </span>
-                    <br>
-                    <span id="selected-station_geo" class="text-gray-400">
-                    </span>
-                    <ul id="selected-station_chargers" class="list-disc list-inside">
-
-                    </ul>
-                </div>
+            <div id="station-details" class="mt-2">
+                @template.partials.selected_station(station=selectedStation)
             </div>
         </div>
-    </div>
 
-    <script>
-        updateUi();
-        document.addEventListener("htmx:afterSettle", (e) => {
-            updateUi()
-        })
-    </script>
+        <script>
+            updateUi();
+            document.addEventListener("htmx:afterSettle", (e) => {
+                if (e.detail.target.id === "stations-table") {
+                    updateUi()
+                }
+            })
+        </script>
 
 `)

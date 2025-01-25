@@ -58,6 +58,7 @@ public class JavalinWebApp {
 
                 .get("/", context -> context.redirect("/app/stations"))
                 .get("/app/stations", stationViewHandler::listStations)
+                .get("/app/stations/{id}", stationViewHandler::viewStation)
                 
 
 

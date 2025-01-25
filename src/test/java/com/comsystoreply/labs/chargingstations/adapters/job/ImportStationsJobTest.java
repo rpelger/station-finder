@@ -37,11 +37,11 @@ class ImportStationsJobTest {
     @Test
     void should_run_scheduled_job_immediately() throws InterruptedException {
         var job = new ImportStationsJob(app, User.SYSTEM_USER);
-        assertThat(app.getStationsPaged(User.ADMIN_USER, new StationPageRequest()).items(), hasSize(0));
+        assertThat(app.listAllStationsPaged(User.ADMIN_USER, new StationPageRequest()).items(), hasSize(0));
 
         job.runOnceImmediately();
         Thread.sleep(100L); // requires sleeping, as job runs asynchronously
 
-        assertThat(app.getStationsPaged(User.ADMIN_USER, new StationPageRequest()).items(), hasSize(1));
+        assertThat(app.listAllStationsPaged(User.ADMIN_USER, new StationPageRequest()).items(), hasSize(1));
     }
 }

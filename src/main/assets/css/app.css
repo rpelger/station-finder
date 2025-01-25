@@ -2,3 +2,8 @@ h1 {
     color: darkred;
     font-size: 46px;
 }
+
+li:focus, li:focus-visible {
+    border: none;
+    outline: transparent;
+}

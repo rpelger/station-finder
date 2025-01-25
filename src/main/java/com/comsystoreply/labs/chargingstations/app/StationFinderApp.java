@@ -13,6 +13,7 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
     private final RegisterUser registerUser;
     private final AuthenticateUser authenticateUser;
     private final ListAllStationsPaged listAllStationsPaged;
+    private final ViewStationAsADmin viewStationAsAdmin;
     private final FindNearestStations findNearestStations;
     private final ViewStationDetails viewStationDetails;
     private final ImportStations importChargingStations;
@@ -31,6 +32,7 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
         findNearestStations = new FindNearestStations(stationRepo);
         listAllStationsPaged = new ListAllStationsPaged(stationRepo);
         viewStationDetails = new ViewStationDetails(stationRepo);
+        viewStationAsAdmin = new ViewStationAsADmin(stationRepo);
         importChargingStations = new ImportStations(stationLoader, stationRepo);
         updateStationOperator = new UpdateStationOperator(stationRepo);
         listStationReviews = new ListStationReviews(stationRepo);
@@ -59,8 +61,13 @@ public class StationFinderApp implements ForAccessingPlatform, ForMaintainingSta
     }
 
     @Override
-    public Paged<Station> getStationsPaged(User user, PageRequest<Station> pageRequest) {
+    public Paged<Station> listAllStationsPaged(User user, PageRequest<Station> pageRequest) {
         return listAllStationsPaged.apply(user, pageRequest);
+    }
+
+    @Override
+    public Station viewStationAsAdmin(User user, StationId stationId) {
+        return viewStationAsAdmin.execute(user, stationId);
     }
 
     @Override
