@@ -42,7 +42,7 @@ jte {
 }
 
 application {
-    mainClass = "com.comsystoreply.labs.chargingstations.Main"
+    mainClass = "com.comsystoreply.labs.stationfinder.Main"
 }
 
 tasks.precompileJte {

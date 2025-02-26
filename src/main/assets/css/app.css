@@ -1,9 +1,167 @@
-h1 {
-    color: darkred;
-    font-size: 46px;
+:root {
+    --clr-primary: hsl(var(--gray-8-hsl) / 1);
 }
 
-li:focus, li:focus-visible {
-    border: none;
-    outline: transparent;
+.milky {
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(2px);
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+
+html {
+    font-family: var(--font-sans);
+}
+
+header {
+    display: flex;
+    height: 4rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--size-4);
+    background-color: hsl(var(--blue-9-hsl) / 1);
+    color: hsl(var(--blue-1-hsl) / 1);
+}
+
+header .logo {
+    font-family: var(--font-mono);
+    line-height: var(--size-3);
+    text-transform: uppercase;
+    letter-spacing: var(--size-2);
+    font-size: var(--font-size-fluid-0);
+    font-weight: var(--font-weight-8);
+}
+
+header .menu-icon {
+    height: var(--size-7);
+    width: var(--size-7);
+    display: flex;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    fill: hsl(var(--gray-1-hsl) / 1);
+}
+
+main {
+    color: var(--clr-primary);
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-5);
+}
+
+main .map-menu {
+    position: absolute;
+    top: 4rem;
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--clr-primary);
+    box-shadow: var(--shadow-4);
+    padding-inline: var(--size-4);
+    z-index: 999;
+}
+
+main .map-menu .toggle-list {
+    width: 2rem;
+}
+
+@media only screen and (min-width: 40rem) {
+    main .map-menu .toggle-list {
+        display: none;
+    }
+}
+
+main .map-menu ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    gap: 12px;
+    list-style-type: none;
+}
+
+main .map-menu ul li {
+    margin: 0;
+    padding: 0;
+}
+
+main .stations-table {
+    position: absolute;
+    top: 7rem;
+    width: 24rem;
+    max-height: calc(100vh - 400px);
+    z-index: 999;
+    margin: var(--size-4);
+    overflow-y: scroll;
+}
+
+@media only screen and (max-width: 40rem) {
+    main .stations-table {
+        margin: 0;
+        width: 100%;
+        max-height: 100%;
+        height: calc(100vh - 120px);
+        left: calc(-100%);
+        transition: all 200ms ease-in;
+    }
+
+    .visible {
+        left: 0 !important;
+        transition: all 200ms ease-out;
+    }
+}
+
+main .stations-table ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding-block: var(--size-4);
+    padding-inline: var(--size-2);
+    font-size: var(--font-size-0);
+    font-weight: var(--font-weight-5);
+    list-style: none;
+}
+
+main .stations-table .station {
+    width: 100%;
+    padding: var(--size-2);
+    border-bottom: 1px solid hsl(var(--gray-6-hsl) / 1);
+}
+
+main .stations-table .station:last-child {
+    border-bottom: 0;
+}
+
+main .stations-table .station-address {
+    font-weight: var(--font-weight-2);
+}
+
+main .stations-table .pagination-info {
+    display: none;
+}
+
+main .map {
+    width: 100%;
+    height: calc(100vh - 4rem);
+    border: 1px solid red;
+}
+
+main .station-details {
+    position: absolute;
+    top: 7rem;
+    right: 0;
+    width: 24rem;
+    min-height: 20rem;
+    z-index: 999;
+    margin: var(--size-4);
+    padding: var(--size-4);
+}
+
+main .station-details h2 {
+    font-size: var(--font-size-2);
 }
